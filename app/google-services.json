@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "181499474956",
+    "project_id": "resadvisor-76108",
+    "storage_bucket": "resadvisor-76108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181499474956:android:2a653efd4cf8bbe49eaa29",
+        "android_client_info": {
+          "package_name": "com.example.resadvisor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181499474956-gur4egldgnsr633d1eupmjjsn96vneed.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9LgN3x0Sp6eXjAkK_xmzgf-2ZueHGZjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181499474956-gur4egldgnsr633d1eupmjjsn96vneed.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
