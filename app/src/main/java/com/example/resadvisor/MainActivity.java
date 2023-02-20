@@ -1,77 +1,51 @@
 package com.example.resadvisor;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
+import androidx.annotation.NonNull;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
-    Button signup, signin;
-    Intent signupInent;
-    int REQUEST_CODE = 1;
-    private FirebaseAuth mAuth;
+    NavController navController;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-        signup = findViewById(R.id.SignUp);
-        signup.setOnClickListener(view -> {
-            signupInent = new Intent(this, Signup_activity.class);
-            startActivityForResult(signupInent, REQUEST_CODE);
 
-        });
-        signin=findViewById(R.id.signin_btn);
-        signin.setOnClickListener(view -> {
-            EditText editText = (EditText) findViewById(R.id.email_txt);
-            String email = editText.getText().toString();
-            editText = (EditText) findViewById(R.id.pass_txt);
-            String password = editText.getText().toString();
-            Log.d("TAG",email);
-            Log.d("TAG",password);
-            signIn(email, password);
-        });
+        NavHostFragment navHostFragment = (NavHostFragment)getSupportFragmentManager().findFragmentById(R.id.main_navhost);
+        navController = navHostFragment.getNavController();
+        NavigationUI.setupActionBarWithNavController(this,navController);
+
+        BottomNavigationView navView = findViewById(R.id.main_bottomNavigationView);
+        NavigationUI.setupWithNavController(navView,navController);
     }
-    private void signIn(String email, String password) {
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
-        // [END sign_in_with_email]
+
+    int fragmentMenuId = 0;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        if (fragmentMenuId != 0){
+            menu.removeItem(fragmentMenuId);
+        }
+        fragmentMenuId = 0;
+        return super.onCreateOptionsMenu(menu);
     }
-    private void reload() { }
 
-    private void updateUI(FirebaseUser user) {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+        if (item.getItemId() == android.R.id.home){
+            navController.popBackStack();
+        }else{
+            fragmentMenuId = item.getItemId();
+            return NavigationUI.onNavDestinationSelected(item,navController);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
