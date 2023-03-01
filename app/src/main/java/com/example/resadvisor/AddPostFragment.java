@@ -18,8 +18,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.firebase.firestore.DocumentReference;
+import com.example.resadvisor.model.Firestore;
 
-import com.example.resadvisor.model.Model;
 import com.example.resadvisor.model.Post;
 
 public class AddPostFragment extends Fragment {
@@ -60,14 +61,17 @@ public class AddPostFragment extends Fragment {
         //When clicked - move to list page
         Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
 
+
         saveBtn.setOnClickListener(view1 -> {
             String title = titleEt.getText().toString();
             String desc = descEt.getText().toString();
-            int price = Integer.getInteger(priceEt.getText().toString());
+            String price = priceEt.getText().toString();
             String res_name = res_nameEt.getText().toString();
             String res_address = res_addressEt.getText().toString();
 
-            Model.instance().addPost(new Post(title, desc,price,res_name,res_address));
+            DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
+            String collection_id = ref.getId();
+            Post.addPost(collection_id, title, desc, price,res_name,res_address);
             Toast.makeText(getContext(),
                             "Publish Successful!",
                             Toast.LENGTH_LONG)
