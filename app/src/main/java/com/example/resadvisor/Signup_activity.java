@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,11 +30,17 @@ public class Signup_activity extends AppCompatActivity {
         signin =findViewById(R.id.SignIn);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        signin.setOnClickListener(view -> {
-            signinInent = new Intent(this, MainActivity.class);
-            startActivityForResult(signinInent,REQUEST_CODE);
-
+        signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent
+                        = new Intent(Signup_activity.this,
+                        LoginActivity.class);
+                startActivity(intent);
+            }
         });
+
         signup = findViewById(R.id.signup);
         signup.setOnClickListener(view -> {
             EditText editText = (EditText)findViewById(R.id.firstname);
