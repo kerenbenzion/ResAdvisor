@@ -3,14 +3,20 @@ package com.example.resadvisor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.resadvisor.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -18,11 +24,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Signup_activity extends AppCompatActivity {
-    Button signin,signup;
+    Button signin,signup,uploadpic;
     Intent signinInent;
     int REQUEST_CODE=1;
+    ImageView IVPreviewImage;
     private FirebaseAuth mAuth;
+    int SELECT_PICTURE = 200;
+    private static final int pic_id = 123;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +50,13 @@ public class Signup_activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        IVPreviewImage = findViewById(R.id.IVPreviewImage);
+        IVPreviewImage.setDrawingCacheEnabled(true);
 
+        uploadpic =findViewById(R.id.uploadpic);
+        uploadpic.setOnClickListener(view -> {
+            imageChooser();
+        });
         signup = findViewById(R.id.signup);
         signup.setOnClickListener(view -> {
             EditText editText = (EditText)findViewById(R.id.firstname);
@@ -56,8 +72,18 @@ public class Signup_activity extends AppCompatActivity {
             Log.d("TAG", email);
             Log.d("TAG", password);
             createAccount(email,password);
+            Bitmap bmap = IVPreviewImage.getDrawingCache();
+
+//            Model.instance().uploadImage(email,bmap,url->Log.d("TAG","Start to upload"));
         });
 
+
+
+    }
+    void imageChooser() {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Start the activity with camera_intent, and request pic id
+        startActivityForResult(camera_intent, pic_id);
 
     }
     private void createAccount(String email, String password) {
@@ -86,5 +112,16 @@ public class Signup_activity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
 
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        // Match the request 'pic id with requestCode
+        if (requestCode == pic_id) {
+            // BitMap is data structure of image file which store the image in memory
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            // Set the image in imageview for display
+            IVPreviewImage.setImageBitmap(photo);
+        }
     }
 }
