@@ -24,8 +24,8 @@
 
     <EditText
         android:id="@+id/addpost_price_et"
-        android:layout_width="400dp"
-        android:layout_height="45dp"
+        android:layout_width="408dp"
+        android:layout_height="41dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#DE57A196"
         android:ems="10"
