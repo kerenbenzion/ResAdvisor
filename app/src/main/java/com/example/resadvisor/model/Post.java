@@ -25,8 +25,8 @@ public class Post {
         this.res_address = res_address;
     }
 
-    public static void addPost(String id, String title, String description, String price,
-                               String res_name, String res_address, String price_usd) {
+    public static void addPost(String id, String title, String description, Integer price,
+                               String res_name, String res_address, Double price_usd) {
         Map<String, Object> data = new HashMap<>();
         data.put("title", title);
         data.put("description", description);

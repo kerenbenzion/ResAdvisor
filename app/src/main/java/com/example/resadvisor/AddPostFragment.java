@@ -60,29 +60,19 @@ public class AddPostFragment extends Fragment {
 
 
 
-    private void getUSD(String collection_id,String title,String desc,String price,String res_name,
+    private void getUSD(String collection_id,String title,String desc,Integer price,String res_name,
                         String res_address) {
-        String msg = "";
-        Thread gfgThread = new Thread(new Runnable() {
+        Thread usdThread = new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
-                    String baseUrl = "https://'exchange-rates'.abstractapi.com/v1/live/";
-                    String base = "ILS";
-                    String target = "USD";
-                    String apiKey = "5e145483e8a94350baefc81285bec5a2";
-                    URL url = null;
-
                     String queryString = "https://exchange-rates.abstractapi.com/v1/live/?api_key=5e145483e8a94350baefc81285bec5a2&base=ILS&target=USD";
                     HttpsURLConnection connection = null;
                     try {
                         connection = (HttpsURLConnection) new URL(queryString).openConnection();
                         connection.setRequestMethod("GET");
-                        System.out.println("$$$$$$$");
 
-                        String msg = connection.getResponseMessage();
-                        System.out.println(msg);
                         InputStream inputStream = connection.getInputStream();
 
                         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -94,21 +84,15 @@ public class AddPostFragment extends Fragment {
                         reader.close();
 
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        String currency_response = jsonObject.getJSONObject("exchange_rates").getJSONObject("USD").toString();
+                        String currency_response = jsonObject.getJSONObject("exchange_rates").get("USD").toString();
 
-//                        Double price_usd = Double.parseDouble(currency_response)*Integer.getInteger(price);
-//                        System.out.println(price_usd);
+                        Double price_usd = Double.parseDouble(currency_response)*price;
 
-                        Post.addPost(collection_id, title, desc, price,res_name,res_address, currency_response);
-                        Toast.makeText(getContext(),
-                                        String.valueOf(price),
-                                        Toast.LENGTH_LONG)
-                                .show();
+                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd);
 
                     } catch (IOException e) {
                         System.out.println(e);
 
-                        // Handle the error
                     } finally {
                         if (connection != null) {
                             connection.disconnect();
@@ -120,7 +104,7 @@ public class AddPostFragment extends Fragment {
             }
         });
 
-        gfgThread.start();
+        usdThread.start();
     }
 
 
@@ -147,13 +131,16 @@ public class AddPostFragment extends Fragment {
         saveBtn.setOnClickListener(view1 -> {
             String title = titleEt.getText().toString();
             String desc = descEt.getText().toString();
-            String price = priceEt.getText().toString();
+            Integer price = Integer.parseInt(priceEt.getText().toString());
             String res_name = res_nameEt.getText().toString();
             String res_address = res_addressEt.getText().toString();
             DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
             String collection_id = ref.getId();
             getUSD(collection_id, title, desc, price,res_name,res_address);
-
+            Toast.makeText(getContext(),
+                            "Upload post successfully",
+                            Toast.LENGTH_LONG)
+                    .show();
 
         });
         return view;

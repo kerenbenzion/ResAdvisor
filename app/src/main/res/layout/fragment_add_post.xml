@@ -24,27 +24,14 @@
 
     <EditText
         android:id="@+id/addpost_price_et"
-        android:layout_width="168dp"
-        android:layout_height="40dp"
+        android:layout_width="408dp"
+        android:layout_height="41dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#DE57A196"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-    <EditText
-        android:id="@+id/addpost_price_usd"
-        android:layout_width="168dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="#DE57A196"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
