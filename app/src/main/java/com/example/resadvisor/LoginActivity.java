@@ -11,10 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
 
+import com.example.resadvisor.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,6 +25,22 @@ public class LoginActivity extends AppCompatActivity {
     private TextView registerRedirect;
 
     private FirebaseAuth mAuth;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Log out need to enable it on my profile page
+//        Model.instance().signout();
+        FirebaseUser fbuser = Model.instance().getcurrent();
+        if (fbuser !=null){
+            Intent intent
+                    = new Intent(LoginActivity.this,
+                    MainActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 loginUserAccount();
+                Log.d("TAG", "The current user is:");
+                Log.d("TAG", String.valueOf(Model.instance().getcurrent()));
             }
         });
         registerRedirect.setOnClickListener(new View.OnClickListener() {
