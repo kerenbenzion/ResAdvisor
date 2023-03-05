@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //Log out need to enable it on my profile page
-        //FirebaseAuth.getInstance().signOut();
+//        Model.instance().signout();
         FirebaseUser fbuser = Model.instance().getcurrent();
         if (fbuser !=null){
             Intent intent

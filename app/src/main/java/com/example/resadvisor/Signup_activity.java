@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.io.ByteArrayOutputStream;
 
@@ -75,13 +76,10 @@ public class Signup_activity extends AppCompatActivity {
             Log.d("TAG", lastname);
             Log.d("TAG", email);
             Log.d("TAG", password);
-            createAccount(email,password);
+            createAccount(email,password,firstname,lastname);
 //            Bitmap bmap = IVPreviewImage.getDrawingCache();
-            Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            Model.instance().uploadImage(firstname+"_"+lastname,data,url->Log.d("TAG","Start to upload"));
+
+
         });
 
 
@@ -93,7 +91,7 @@ public class Signup_activity extends AppCompatActivity {
         startActivityForResult(camera_intent, pic_id);
 
     }
-    private void createAccount(String email, String password) {
+    private void createAccount(String email, String password,String firstname,String lastname) {
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -102,14 +100,38 @@ public class Signup_activity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+                            Model.instance().uploadImage(firstname+"_"+lastname,data,url->Log.d("TAG","Start to upload"));
+
+                            FirebaseUser user =Model.instance().getcurrent();
+                            UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(firstname).build();
+                            user.updateProfile(profileupdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        String displayName =Model.instance().getcurrent().getDisplayName();
+                                        Log.d("TAG","User profile updated");
+                                        Log.d("TAG","Display name: "+ displayName);
+                                        Intent intent
+                                                = new Intent(Signup_activity.this,
+                                                LoginActivity.class);
+                                        startActivity(intent);
+
+                                    } else {
+                                        Log.d("TAG","User profile was not updated");
+                                    }
+                                }
+                            });
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
                             Toast.makeText(Signup_activity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
@@ -117,9 +139,7 @@ public class Signup_activity extends AppCompatActivity {
     }
     private void reload() { }
 
-    private void updateUI(FirebaseUser user) {
 
-    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
