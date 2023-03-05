@@ -13,15 +13,17 @@ public class Post {
     public String title;
     public String description;
     public String price;
+    public String price_usd;
     public String res_name;
     public String res_address;
 
 
-    public Post( String title, String description, String price,
+    public Post( String title, String description, String price, String priceUsd,
                 String res_name, String res_address) {
         this.title = title;
         this.description = description;
         this.price = price;
+        this.price_usd = priceUsd;
         this.res_name = res_name;
         this.res_address = res_address;
     }
@@ -54,6 +56,7 @@ public class Post {
     static final String TITLE = "title";
     static final String DESCRIPTION = "description";
     static final String PRICE = "price";
+    static final String PRICEUSD = "price_usd";
     static final String RESNAME = "res_name";
     static final String RESADDRESS = "res_address";
 
@@ -61,10 +64,11 @@ public class Post {
         String title = (String)json.get(TITLE);
         String description = (String)json.get(DESCRIPTION);
         String price = String.valueOf(json.get(PRICE));
+        String priceUsd = String.format("%.2f", json.get(PRICEUSD));
         String res_name = (String) json.get(RESNAME);
         String res_address = (String) json.get(RESADDRESS);
 
-        Post post = new Post(title, description, price, res_name, res_address);
+        Post post = new Post(title, description, price, priceUsd, res_name, res_address);
 
         return post;
     }

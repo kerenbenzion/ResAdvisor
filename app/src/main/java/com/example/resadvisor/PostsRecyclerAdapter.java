@@ -19,6 +19,8 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     TextView description;
     TextView price;
     List<Post> data;
+    Boolean priceInNis;
+
     public PostViewHolder(@NonNull View itemView, List<Post> data) {
         super(itemView);
         title = itemView.findViewById(R.id.postslistrow_title);
@@ -26,14 +28,14 @@ class PostViewHolder extends RecyclerView.ViewHolder{
         price = itemView.findViewById(R.id.postslistrow_price);
         Button convert = itemView.findViewById(R.id.postslistrow_convert_btn);
         this.data = data;
-
+        priceInNis = true;
         convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = (int)price.getTag();
                 Post post = data.get(pos);
-                post.price = "changed";
-                price.setText("changed");
+                price.setText(priceInNis ? post.price_usd + " $" : post.price + " NIS");
+                priceInNis = !priceInNis;
             }
         });
     }
@@ -41,7 +43,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     public void bind(Post post, int pos) {
         title.setText(post.title);
         description.setText(post.description);
-        price.setText(post.price);
+        price.setText(post.price + " NIS");
         price.setTag(pos);
     }
 }
