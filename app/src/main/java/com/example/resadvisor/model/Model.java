@@ -1,5 +1,7 @@
 package com.example.resadvisor.model;
 
+import java.util.LinkedList;
+import java.util.List;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,20 +14,23 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Model {
-    private static final Model _instance = new Model();
 
+    static final Model _instance = new Model();
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseStoreageModel firebaseModel = new FirebaseStoreageModel();
     private FirebaseAuthModel authModel = new FirebaseAuthModel();
 //    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
-    public static Model instance(){
+    public static Model instance()
+    {
         return _instance;
     }
-    private Model(){
+    private Firestore firestore = new Firestore();
+    private Model()
+    {
     }
-
+    
     public interface Listener<T>{
         void onComplete(T data);
     }
@@ -36,10 +41,23 @@ public class Model {
         NOT_LOADING
     }
 
+    List<Post> data = new LinkedList<>();
 
+    public interface GetAllPostsListener{
+        void onComplete(List<Post> data);
+    }
+    public void getAllPosts(GetAllPostsListener callback)
+    {
+        firestore.getAllPosts(callback);
+        //callback.onComplete(data);
+    }
 
+    public void addPost(Post post)
+    {
+        data.add(post);
+    }
 
-//    public void addStudent(Student st, Listener<Void> listener){
+//    public void addStudent(Student st, <Void> listener){
 //        firebaseModel.addStudent(st,(Void)->{
 //            refreshAllStudents();
 //            listener.onComplete(null);
@@ -54,4 +72,5 @@ public class Model {
     public void uploadImage(String name, byte[] data, Listener<String> listener) {
         firebaseModel.uploadImage(name,data,listener);
     }
+
 }

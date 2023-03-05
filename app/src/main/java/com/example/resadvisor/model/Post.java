@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.Timestamp;
 
 public class Post {
     public String title;
@@ -48,6 +49,24 @@ public class Post {
                         Log.w("TAG", "Error adding document", e);
                     }
                 });
+    }
+
+    static final String TITLE = "title";
+    static final String DESCRIPTION = "description";
+    static final String PRICE = "price";
+    static final String RESNAME = "res_name";
+    static final String RESADDRESS = "res_address";
+
+    public static Post fromJson(Map<String,Object> json){
+        String title = (String)json.get(TITLE);
+        String description = (String)json.get(DESCRIPTION);
+        String price = String.valueOf(json.get(PRICE));
+        String res_name = (String) json.get(RESNAME);
+        String res_address = (String) json.get(RESADDRESS);
+
+        Post post = new Post(title, description, price, res_name, res_address);
+
+        return post;
     }
 
 
