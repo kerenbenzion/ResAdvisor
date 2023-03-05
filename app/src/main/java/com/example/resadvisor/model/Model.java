@@ -6,6 +6,8 @@ import android.os.Looper;
 
 import androidx.core.os.HandlerCompat;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -15,6 +17,7 @@ public class Model {
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseStoreageModel firebaseModel = new FirebaseStoreageModel();
+    private FirebaseAuthModel authModel = new FirebaseAuthModel();
 //    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public static Model instance(){
@@ -42,8 +45,13 @@ public class Model {
 //            listener.onComplete(null);
 //        });
 //    }
-
-    public void uploadImage(String name, Bitmap bitmap, Listener<String> listener) {
-        firebaseModel.uploadImage(name,bitmap,listener);
+    public FirebaseUser getcurrent(){
+        return authModel.getUser();
+    }
+    public void signout(){
+        authModel.signout();
+    }
+    public void uploadImage(String name, byte[] data, Listener<String> listener) {
+        firebaseModel.uploadImage(name,data,listener);
     }
 }

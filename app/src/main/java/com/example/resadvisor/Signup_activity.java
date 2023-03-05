@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +24,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.ByteArrayOutputStream;
+
 public class Signup_activity extends AppCompatActivity {
     Button signin,signup,uploadpic;
     Intent signinInent;
@@ -31,6 +34,7 @@ public class Signup_activity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     int SELECT_PICTURE = 200;
     private static final int pic_id = 123;
+    private Uri mImageUri = null;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,7 +56,7 @@ public class Signup_activity extends AppCompatActivity {
         });
         IVPreviewImage = findViewById(R.id.IVPreviewImage);
         IVPreviewImage.setDrawingCacheEnabled(true);
-
+        IVPreviewImage.buildDrawingCache();
         uploadpic =findViewById(R.id.uploadpic);
         uploadpic.setOnClickListener(view -> {
             imageChooser();
@@ -72,9 +76,12 @@ public class Signup_activity extends AppCompatActivity {
             Log.d("TAG", email);
             Log.d("TAG", password);
             createAccount(email,password);
-            Bitmap bmap = IVPreviewImage.getDrawingCache();
-
-//            Model.instance().uploadImage(email,bmap,url->Log.d("TAG","Start to upload"));
+//            Bitmap bmap = IVPreviewImage.getDrawingCache();
+            Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            Model.instance().uploadImage(firstname+"_"+lastname,data,url->Log.d("TAG","Start to upload"));
         });
 
 
@@ -120,6 +127,8 @@ public class Signup_activity extends AppCompatActivity {
         if (requestCode == pic_id) {
             // BitMap is data structure of image file which store the image in memory
             Bitmap photo = (Bitmap) data.getExtras().get("data");
+//            mImageUri = data.getData();
+//            mSelectImage.setImageURI(mImageUri);
             // Set the image in imageview for display
             IVPreviewImage.setImageBitmap(photo);
         }

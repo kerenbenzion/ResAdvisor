@@ -19,33 +19,45 @@ public class FirebaseStoreageModel {
     FirebaseStoreageModel(){
         storage = FirebaseStorage.getInstance();
     }
-    void uploadImage(String name, Bitmap bitmap,Model.Listener<String> listener){
+    void uploadImage(String name, byte[] data,Model.Listener<String> listener){
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = imagesRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                listener.onComplete(null);
                 Log.d("TAG","Did not succeed to upload!");
-
+                // Handle unsuccessful uploads
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        listener.onComplete(uri.toString());
-                        Log.d("TAG","Succeed to upload!");
-                    }
-                });
+                Log.d("TAG","Succeed to upload!");
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
             }
         });
+
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+////                listener.onComplete(null);
+//                Log.d("TAG","Did not succeed to upload!");
+//
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        listener.onComplete(uri.toString());
+//                        Log.d("TAG","Succeed to upload!");
+//                    }
+//                });
+//            }
+//        });
 
     }
 }
