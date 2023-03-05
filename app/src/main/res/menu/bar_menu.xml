@@ -6,6 +6,7 @@
         android:icon="@android:drawable/ic_input_add"
         android:title="Add post" />
     <item
+        android:id="@+id/ProfileFragment"
         android:icon="@android:drawable/checkbox_on_background"
         android:title="About" />
 </menu>
