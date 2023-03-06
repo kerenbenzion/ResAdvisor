@@ -18,6 +18,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     TextView title;
     TextView description;
     TextView price;
+    TextView email;
     List<Post> data;
     Boolean priceInNis;
 
@@ -26,6 +27,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
         title = itemView.findViewById(R.id.postslistrow_title);
         description = itemView.findViewById(R.id.postslistrow_description);
         price = itemView.findViewById(R.id.postslistrow_price);
+        email = itemView.findViewById(R.id.postslistrow_email);
         Button convert = itemView.findViewById(R.id.postslistrow_convert_btn);
         this.data = data;
         priceInNis = true;
@@ -41,6 +43,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bind(Post post, int pos) {
+        email.setText(post.email);
         title.setText(post.title);
         description.setText(post.description);
         price.setText(post.price + " NIS");
