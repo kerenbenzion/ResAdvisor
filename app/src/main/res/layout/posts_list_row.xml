@@ -38,7 +38,7 @@
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/postslistrow_price"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
         app:layout_constraintTop_toBottomOf="@+id/postslistrow_title" />
 
@@ -48,19 +48,33 @@
         android:layout_height="19dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/postslistrow_convert_btn"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/postslistrow_img" />
+
+    <TextView
+        android:id="@+id/postslistrow_email"
+        android:layout_width="0dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/postslistrow_convert_btn"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
-        app:layout_constraintTop_toBottomOf="@+id/postslistrow_description" />
+        app:layout_constraintTop_toBottomOf="@+id/postslistrow_price" />
 
     <Button
         android:id="@+id/postslistrow_convert_btn"
         android:layout_width="69dp"
         android:layout_height="33dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="28dp"
         android:text="Convert"
         android:textSize="7sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +102,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/postslistrow_description"
         app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
-        app:layout_constraintTop_toBottomOf="@+id/postslistrow_title" />
+        app:layout_constraintTop_toBottomOf="@+id/postslistrow_title"
+        app:layout_constraintVertical_bias="0.533" />
 
     <TextView
         android:id="@+id/textView15"
@@ -101,5 +116,16 @@
         app:layout_constraintBottom_toTopOf="@+id/postslistrow_price"
         app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
         app:layout_constraintTop_toBottomOf="@+id/postslistrow_description" />
+
+    <TextView
+        android:id="@+id/Usertitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="User"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
+        app:layout_constraintTop_toBottomOf="@+id/postslistrow_price" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

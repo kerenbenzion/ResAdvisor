@@ -1,5 +1,6 @@
 package com.example.resadvisor.model;
 import android.util.Log;
+import android.view.Display;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,21 +17,23 @@ public class Post {
     public String price_usd;
     public String res_name;
     public String res_address;
-
+    public String email;
 
     public Post( String title, String description, String price, String priceUsd,
-                String res_name, String res_address) {
+                String res_name, String res_address,String email) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.price_usd = priceUsd;
         this.res_name = res_name;
         this.res_address = res_address;
+        this.email=email;
     }
 
     public static void addPost(String id, String title, String description, Integer price,
-                               String res_name, String res_address, Double price_usd) {
+                               String res_name, String res_address, Double price_usd,String email) {
         Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
         data.put("title", title);
         data.put("description", description);
         data.put("price", price);
@@ -59,7 +62,7 @@ public class Post {
     static final String PRICEUSD = "price_usd";
     static final String RESNAME = "res_name";
     static final String RESADDRESS = "res_address";
-
+    static final String EMAIL = "email";
     public static Post fromJson(Map<String,Object> json){
         String title = (String)json.get(TITLE);
         String description = (String)json.get(DESCRIPTION);
@@ -67,8 +70,8 @@ public class Post {
         String priceUsd = String.format("%.2f", json.get(PRICEUSD));
         String res_name = (String) json.get(RESNAME);
         String res_address = (String) json.get(RESADDRESS);
-
-        Post post = new Post(title, description, price, priceUsd, res_name, res_address);
+        String email = (String)json.get(EMAIL);
+        Post post = new Post(title, description, price, priceUsd, res_name, res_address ,email);
 
         return post;
     }

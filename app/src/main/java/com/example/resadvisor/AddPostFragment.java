@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.resadvisor.model.Model;
 import com.google.firebase.firestore.DocumentReference;
 import com.example.resadvisor.model.Firestore;
 
@@ -87,8 +89,8 @@ public class AddPostFragment extends Fragment {
                         String currency_response = jsonObject.getJSONObject("exchange_rates").get("USD").toString();
 
                         Double price_usd = Double.parseDouble(currency_response)*price;
-
-                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd);
+                        String email = Model.instance().getcurrent().getEmail();
+                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email);
 
                     } catch (IOException e) {
                         System.out.println(e);
