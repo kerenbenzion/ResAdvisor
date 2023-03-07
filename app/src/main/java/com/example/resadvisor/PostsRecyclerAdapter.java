@@ -1,14 +1,17 @@
 package com.example.resadvisor;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.resadvisor.model.Model;
 import com.example.resadvisor.model.Post;
 
 import java.util.List;
@@ -20,10 +23,12 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     TextView price;
     TextView email;
     List<Post> data;
+    ImageView picture;
     Boolean priceInNis;
 
     public PostViewHolder(@NonNull View itemView, List<Post> data) {
         super(itemView);
+        picture = itemView.findViewById(R.id.postslistrow_img);
         title = itemView.findViewById(R.id.postslistrow_title);
         description = itemView.findViewById(R.id.postslistrow_description);
         price = itemView.findViewById(R.id.postslistrow_price);
@@ -43,6 +48,8 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bind(Post post, int pos) {
+        Model.instance().getBitMap(post.pic_path,picture);
+//        picture.setImageBitmap(b);
         email.setText(post.email);
         title.setText(post.title);
         description.setText(post.description);

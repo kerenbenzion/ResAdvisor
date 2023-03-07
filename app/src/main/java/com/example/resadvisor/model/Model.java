@@ -5,6 +5,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 
 import androidx.core.os.HandlerCompat;
 
@@ -71,6 +72,9 @@ public class Model {
     }
     public void uploadImage(String name, byte[] data, Listener<String> listener) {
         firebaseModel.uploadImage(name,data,listener);
+    }
+    public void getBitMap(String path, ImageView img) {
+        firebaseModel.getImage(path,img);
     }
 
 }
