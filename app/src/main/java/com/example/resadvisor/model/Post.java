@@ -18,9 +18,9 @@ public class Post {
     public String res_name;
     public String res_address;
     public String email;
-
+    public String pic_path;
     public Post( String title, String description, String price, String priceUsd,
-                String res_name, String res_address,String email) {
+                String res_name, String res_address,String email,String pic_path) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -28,10 +28,11 @@ public class Post {
         this.res_name = res_name;
         this.res_address = res_address;
         this.email=email;
+        this.pic_path=pic_path;
     }
 
     public static void addPost(String id, String title, String description, Integer price,
-                               String res_name, String res_address, Double price_usd,String email) {
+                               String res_name, String res_address, Double price_usd,String email,String picpath) {
         Map<String, Object> data = new HashMap<>();
         data.put("email", email);
         data.put("title", title);
@@ -40,7 +41,7 @@ public class Post {
         data.put("res_name", res_name);
         data.put("res_address",res_address);
         data.put("price_usd",price_usd);
-
+        data.put("pic_path",picpath);
         Firestore.instance().getDb().collection("published_posts").document(id).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -63,6 +64,7 @@ public class Post {
     static final String RESNAME = "res_name";
     static final String RESADDRESS = "res_address";
     static final String EMAIL = "email";
+    static final String PICTURE = "pic_path";
     public static Post fromJson(Map<String,Object> json){
         String title = (String)json.get(TITLE);
         String description = (String)json.get(DESCRIPTION);
@@ -71,7 +73,8 @@ public class Post {
         String res_name = (String) json.get(RESNAME);
         String res_address = (String) json.get(RESADDRESS);
         String email = (String)json.get(EMAIL);
-        Post post = new Post(title, description, price, priceUsd, res_name, res_address ,email);
+        String pic_path = (String)json.get(PICTURE);
+        Post post = new Post(title, description, price, priceUsd, res_name, res_address ,email,pic_path);
 
         return post;
     }

@@ -1,7 +1,19 @@
 package com.example.resadvisor;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import androidx.annotation.NonNull;
@@ -10,6 +22,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.LayoutInflater;
@@ -19,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
@@ -26,6 +40,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.example.resadvisor.model.Firestore;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,14 +53,17 @@ import com.example.resadvisor.model.Post;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class AddPostFragment extends Fragment {
-
+    int SELECT_PICTURE = 200;
+    ImageView IVPreviewImage;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentActivity parentActivity = getActivity();
+
         parentActivity.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -57,6 +75,7 @@ public class AddPostFragment extends Fragment {
                 return false;
             }
         },this, Lifecycle.State.RESUMED);
+
 
     }
 
@@ -90,7 +109,14 @@ public class AddPostFragment extends Fragment {
 
                         Double price_usd = Double.parseDouble(currency_response)*price;
                         String email = Model.instance().getcurrent().getEmail();
-                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email);
+                        String picpath = collection_id+"_"+title+"_"+email.split("@")[0];
+                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
+                        Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+                        Model.instance().uploadImage(picpath,data,url->Log.d("TAG","Start to upload"));
+
 
                     } catch (IOException e) {
                         System.out.println(e);
@@ -114,10 +140,10 @@ public class AddPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_post, container, false);
 
+        View view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        IVPreviewImage = view.findViewById(R.id.uploaded_picture);
         EditText titleEt = view.findViewById(R.id.addpost_title_et);
         EditText descEt = view.findViewById(R.id.addpost_desc_et);
         EditText priceEt = view.findViewById(R.id.addpost_price_et);
@@ -125,11 +151,12 @@ public class AddPostFragment extends Fragment {
         EditText res_addressEt = view.findViewById(R.id.addpost_res_address_et);
 
         Button saveBtn = view.findViewById(R.id.addpost_save_btn);
-
+        Button add_image = view.findViewById(R.id.add_image);
         //When clicked - move to list page
         Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
-
-
+        add_image.setOnClickListener(view1->{
+            image_chooser();
+        });
         saveBtn.setOnClickListener(view1 -> {
             String title = titleEt.getText().toString();
             String desc = descEt.getText().toString();
@@ -146,6 +173,35 @@ public class AddPostFragment extends Fragment {
 
         });
         return view;
+
+
+
     }
 
+    private void image_chooser() {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        // pass the constant to compare it
+        // with the returned requestCode
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+            // compare the resultCode with the
+            // SELECT_PICTURE constant
+            if (requestCode == SELECT_PICTURE) {
+                // Get the url of the image from data
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
+                    // update the preview image in the layout
+                    IVPreviewImage.setImageURI(selectedImageUri);
+                }
+            }
+        }
+    }
 }

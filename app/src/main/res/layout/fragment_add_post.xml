@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toTopOf="@+id/addpost_cancell_btn"
         app:layout_constraintTop_toBottomOf="@+id/addpost_res_address_et"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="13dp" />
 
     <EditText
         android:id="@+id/addpost_res_address_et"
@@ -168,5 +168,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/addpost_save_btn" />
+
+    <ImageView
+        android:id="@+id/uploaded_picture"
+        android:layout_width="149dp"
+        android:layout_height="60dp"
+        android:src="@drawable/blue_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.702"
+        app:layout_constraintStart_toEndOf="@+id/add_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.861" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
