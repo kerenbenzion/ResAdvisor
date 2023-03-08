@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,39 @@ public class Signup_activity extends AppCompatActivity {
             String email = editText.getText().toString();
             editText = (EditText)findViewById(R.id.password);
             String password = editText.getText().toString();
+
+            // validations for all inputs
+            if (TextUtils.isEmpty(firstname)) {
+                Toast.makeText(getApplicationContext(),
+                                "Please enter first name",
+                                Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+            if (TextUtils.isEmpty(lastname)) {
+                Toast.makeText(getApplicationContext(),
+                                "Please enter last name",
+                                Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+            if (TextUtils.isEmpty(email)) {
+                Toast.makeText(getApplicationContext(),
+                                "Please enter email",
+                                Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+            if (TextUtils.isEmpty(password)) {
+                Toast.makeText(getApplicationContext(),
+                                "Please enter password",
+                                Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+
+
             Log.d("TAG", firstname);
             Log.d("TAG", lastname);
             Log.d("TAG", email);
