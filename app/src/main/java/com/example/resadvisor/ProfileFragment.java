@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
@@ -62,45 +63,38 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void updatePassword(String password, String newPass) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private void updatePassword1(String password, String newPass) {
+        FirebaseUser user = Model.instance().getcurrent();
         final String email = user.getEmail();
         Log.d(TAG, "email");
         Log.d(TAG, email);
         Log.d(TAG, "Password");
         Log.d(TAG, password);
-//
-//        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-//        Log.d(TAG, credential.toString());
-
-
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(
-//                        new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(
-//                                    @NonNull Task<AuthResult> task)
-//                            {
-//                                if (task.isSuccessful()) {
+        AuthCredential credential = EmailAuthProvider.getCredential(email, newPass);
         user.updatePassword(newPass)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User password updated.");
-                        } else {
-                            Log.d(TAG, "FAIL UPDATE PASS.");
+                            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Log.d(TAG, "User re-authenticated.");
+                                    }else {
+                                        Log.d("TAG", "Did not e-authenticate");
+                                    }
+                                }
+                            });
 
+                        }else {
+                            Log.d("TAG","User did not change password");
                         }
                     }
                 });
+
     }
-//                                else {
-//                                    Log.d(TAG, "FAILLLLL");
-//
-//                                }
-//                            }
-//                        });
 
 
 
@@ -122,11 +116,7 @@ public class ProfileFragment extends Fragment {
         passwordTextView = rootView.findViewById(R.id.profileCurrentPass);
         updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass);
 
-        String currentPass = passwordTextView.toString();
-        String newPass = updatedPasswordTextView.toString();
-        Log.d("TAG", "currentPass");
 
-        Log.d("TAG", currentPass);
 
         Button updatePass = rootView.findViewById(R.id.profile_change_pass_btn);
 
@@ -134,7 +124,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                updatePassword(currentPass,newPass );
+                String currentPass = passwordTextView.getText().toString();
+                String newPass = updatedPasswordTextView.getText().toString();
+                Log.d("TAG", "currentPass");
+                Log.d("TAG", currentPass);
+                updatePassword1(currentPass,newPass );
                 Log.d("TAG", String.valueOf(Model.instance().getcurrent()));
             }
         });
