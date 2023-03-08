@@ -3,6 +3,7 @@ package com.example.resadvisor;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +39,8 @@ import com.example.resadvisor.model.FirebaseAuthModel;
 
 public class ProfileFragment extends Fragment {
     private EditText profile_first_name_et, email_et;
-    private String passwordTextView, updatedPasswordTextView;
+    private EditText passwordTextView, updatedPasswordTextView;
+    FirebaseAuth mAuth;
 
 
     @Override
@@ -60,7 +63,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void updatePassword(String password, String newPass) {
-        FirebaseUser user = new FirebaseAuthModel().getUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String email = user.getEmail();
         Log.d(TAG, "email");
         Log.d(TAG, email);
@@ -70,61 +73,37 @@ public class ProfileFragment extends Fragment {
         AuthCredential credential = EmailAuthProvider.getCredential(email,password);
         Log.d(TAG, credential.toString());
 
-//        Task<AuthResult> data = user.reauthenticateAndRetrieveData(credential);
-//        Log.d(TAG, "getResult");
-//
-//        Log.d(TAG, data.getResult().toString());
 
-        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    user.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(!task.isSuccessful()){
-                                Log.d(TAG, "Password updated");
-                            }else {
-                                Log.d(TAG, "Error password not updated");
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(
+                        new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(
+                                    @NonNull Task<AuthResult> task)
+                            {
+                                if (task.isSuccessful()) {
+                                    user.updatePassword(newPass)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "User password updated.");
+                                                    }
+                                                    else{
+                                                        Log.d(TAG, "FAIL UPDATE PASS.");
 
+                                                    }
+                                                }
+                                            });
+                                }
+                                else {
+                                    Log.d(TAG, "FAILLLLL");
+
+                                }
                             }
-                        }
-                    });
-                }else {
-                    Log.d(TAG, "Error auth failed");
-                }
-            }
-        });
+                        });
     }
 
-
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        AuthCredential credential = EmailAuthProvider
-//                .getCredential(email, password);
-//        Log.d(TAG, email);
-//        Log.d(TAG, password);
-//
-//        user.reauthenticate(credential)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            user.updatePassword(newPass).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Log.d(TAG, "Password updated");
-//                                    } else {
-//                                        Log.d(TAG, "Error password not updated");
-//                                    }
-//                                }
-//                            });
-//                        } else {
-//                            Log.d(TAG, "Error auth failed");
-//                        }
-//                    }
-//                });
-//    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -140,12 +119,15 @@ public class ProfileFragment extends Fragment {
         email_et = rootView.findViewById(R.id.editTextTextEmailAddress);
         email_et.setText(email);
 
-//        EditText edtOldPass = rootView.findViewById(R.id.profileCurrentPassword_Et);
-//
-//        String pass = edtOldPass.getText().toString();
 
-        passwordTextView = rootView.findViewById(R.id.profileCurrentPassword_Et).toString();
-        updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass).toString();
+        passwordTextView = rootView.findViewById(R.id.profileCurrentPass);
+        updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass);
+
+        String currentPass = passwordTextView.getText().toString();
+        String newPass = updatedPasswordTextView.getText().toString();
+        Log.d("TAG", "currentPass");
+
+        Log.d("TAG", currentPass);
 
         Button updatePass = rootView.findViewById(R.id.profile_change_pass_btn);
 
@@ -153,7 +135,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                updatePassword(passwordTextView,updatedPasswordTextView );
+                updatePassword(currentPass,newPass );
                 Log.d("TAG", String.valueOf(Model.instance().getcurrent()));
             }
         });

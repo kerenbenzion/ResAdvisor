@@ -19,12 +19,11 @@
 
     <TextView
         android:id="@+id/profile_curent_password"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
         android:text="currentPassword"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/profileCurrentPassword_Et"
+        app:layout_constraintBottom_toTopOf="@+id/profileCurrentPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
@@ -84,6 +83,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/profile_curent_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,30 +101,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/profileUpdatePass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="176dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/profile_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="460dp"
         android:text="Update  password"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/profileUpdatePass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/profile_add_image_btn"
@@ -138,14 +126,21 @@
         app:layout_constraintStart_toEndOf="@+id/profile_picture" />
 
     <EditText
-        android:id="@+id/profileCurrentPassword_Et"
+        android:id="@+id/profileCurrentPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="24dp"
         android:ems="10"
-        android:inputType="text"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/profile_password"
-        app:layout_constraintEnd_toEndOf="parent" />
+        tools:layout_editor_absoluteX="12dp" />
+
+    <EditText
+        android:id="@+id/profileUpdatePass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/profile_picture"
+        tools:layout_editor_absoluteX="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
