@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 return false;
             }
-        },this, Lifecycle.State.RESUMED);
+        }, this, Lifecycle.State.RESUMED);
 
     }
 
@@ -69,40 +69,39 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, email);
         Log.d(TAG, "Password");
         Log.d(TAG, password);
+//
+//        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+//        Log.d(TAG, credential.toString());
 
-        AuthCredential credential = EmailAuthProvider.getCredential(email,password);
-        Log.d(TAG, credential.toString());
 
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(
+//                        new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(
+//                                    @NonNull Task<AuthResult> task)
+//                            {
+//                                if (task.isSuccessful()) {
+        user.updatePassword(newPass)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User password updated.");
+                        } else {
+                            Log.d(TAG, "FAIL UPDATE PASS.");
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(
-                                    @NonNull Task<AuthResult> task)
-                            {
-                                if (task.isSuccessful()) {
-                                    user.updatePassword(newPass)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d(TAG, "User password updated.");
-                                                    }
-                                                    else{
-                                                        Log.d(TAG, "FAIL UPDATE PASS.");
-
-                                                    }
-                                                }
-                                            });
-                                }
-                                else {
-                                    Log.d(TAG, "FAILLLLL");
-
-                                }
-                            }
-                        });
+                        }
+                    }
+                });
     }
+//                                else {
+//                                    Log.d(TAG, "FAILLLLL");
+//
+//                                }
+//                            }
+//                        });
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -123,8 +122,8 @@ public class ProfileFragment extends Fragment {
         passwordTextView = rootView.findViewById(R.id.profileCurrentPass);
         updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass);
 
-        String currentPass = passwordTextView.getText().toString();
-        String newPass = updatedPasswordTextView.getText().toString();
+        String currentPass = passwordTextView.toString();
+        String newPass = updatedPasswordTextView.toString();
         Log.d("TAG", "currentPass");
 
         Log.d("TAG", currentPass);
