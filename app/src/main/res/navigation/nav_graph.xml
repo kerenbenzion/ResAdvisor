@@ -3,8 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/addPostFragment">
-
+    app:startDestination="@id/postsListFragment">
+    <fragment
+        android:id="@+id/postsListFragment"
+        android:name="com.example.resadvisor.PostsListFragment"
+        android:label="fragment_posts_list"
+        tools:layout="@layout/fragment_posts_list" >
+        <action
+            android:id="@+id/action_postsListFragment_to_addPostFragment2"
+            app:destination="@id/addPostFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.resadvisor.AddPostFragment"
