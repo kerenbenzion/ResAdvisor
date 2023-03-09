@@ -3,6 +3,7 @@ package com.example.resadvisor.model;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.os.HandlerCompat;
 
@@ -46,6 +47,8 @@ public class Model {
 //        });
 //    }
     public FirebaseUser getcurrent(){
+        Log.d("TAG","Display name: " +authModel.getUser());
+
         return authModel.getUser();
     }
     public void signout(){

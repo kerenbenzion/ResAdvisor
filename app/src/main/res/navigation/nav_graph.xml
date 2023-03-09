@@ -11,10 +11,10 @@
         android:label="Add Post"
         tools:layout="@layout/fragment_add_post" />
     <action android:id="@+id/action_global_addPostFragment" app:destination="@id/addPostFragment" />
-<!--    <fragment-->
-<!--        android:id="@+id/ProfileFragment"-->
-<!--        android:name="com.example.resadvisor.ProfileFragment"-->
-<!--        android:label="Profile"-->
-<!--        tools:layout="@layout/fragment_add_post" />-->
-<!--    <action android:id="@+id/action_global_addPostFragment" app:destination="@id/ProfileFragment" />-->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.resadvisor.ProfileFragment"
+        android:label="Add Post"
+        tools:layout="@layout/fragment_profile" />
+    <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
 </navigation>
