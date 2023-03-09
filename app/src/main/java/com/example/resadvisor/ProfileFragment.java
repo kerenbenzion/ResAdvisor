@@ -4,6 +4,8 @@ import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,11 +41,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.resadvisor.model.FirebaseAuthModel;
 
+import org.checkerframework.common.subtyping.qual.Bottom;
+
+import java.io.ByteArrayOutputStream;
+
 
 public class ProfileFragment extends Fragment {
     private EditText profile_first_name_et, email_et;
     private EditText passwordTextView, updatedPasswordTextView;
     FirebaseAuth mAuth;
+    private static final int pic_id = 111;
+    ImageView IVPreviewImage;
 
 
     @Override
@@ -96,9 +106,14 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    void imageChooser() {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Start the activity with camera_intent, and request pic id
+        startActivityForResult(camera_intent, pic_id);
 
+    }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongThread"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,7 +132,6 @@ public class ProfileFragment extends Fragment {
         updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass);
 
 
-
         Button updatePass = rootView.findViewById(R.id.profile_change_pass_btn);
 
         updatePass.setOnClickListener(new View.OnClickListener() {
@@ -132,10 +146,32 @@ public class ProfileFragment extends Fragment {
                 Log.d("TAG", String.valueOf(Model.instance().getcurrent()));
             }
         });
-
-
-
+        IVPreviewImage = rootView.findViewById(R.id.IVProfilePreviewImage);
+        IVPreviewImage.setDrawingCacheEnabled(true);
+        IVPreviewImage.buildDrawingCache();
+        Button profile_update_img = rootView.findViewById(R.id.profile_add_image_btn);
+        profile_update_img.setOnClickListener(view -> {
+            imageChooser();
+        });
+//        Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//        byte[] data = baos.toByteArray();
+//        Model.instance().uploadImage(email,data,url->Log.d("TAG","Start to upload"));
 
         return rootView;
     }
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//        // Match the request 'pic id with requestCode
+//        if (requestCode == pic_id) {
+//            // BitMap is data structure of image file which store the image in memory
+//            Bitmap photo = (Bitmap) data.getExtras().get("data");
+////            mImageUri = data.getData();
+////            mSelectImage.setImageURI(mImageUri);
+//            // Set the image in imageview for display
+//            IVPreviewImage.setImageBitmap(photo);
+//        }
+//    }
 }
