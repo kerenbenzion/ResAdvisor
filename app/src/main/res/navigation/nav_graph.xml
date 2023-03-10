@@ -18,4 +18,12 @@
         android:name="com.example.resadvisor.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" />
+
+    <activity
+        android:id="@+id/map"
+        android:name="com.example.resadvisor.MapsActivity"
+        android:label="@string/title_activity_maps"
+        tools:layout="@layout/activity_maps" />
+
+
 </navigation>
