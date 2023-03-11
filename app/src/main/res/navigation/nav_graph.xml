@@ -42,13 +42,9 @@
         android:layout_height="match_parent">
         <action
             android:id="@+id/action_maps_to_resturantdetails"
-            app:destination="@id/addPostFragment2" />
+            app:destination="@id/profileFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/resturantdetails"
-        android:name="com.example.resadvisor.ResturantDetails"
-        android:label="fragment_resturant_details"
-        tools:layout="@layout/fragment_resturant_details" />
+
 
 
 

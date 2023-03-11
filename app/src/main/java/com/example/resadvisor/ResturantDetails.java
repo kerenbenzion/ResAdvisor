@@ -1,64 +1,50 @@
 package com.example.resadvisor;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+import com.google.android.gms.maps.model.LatLng;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ResturantDetails#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ResturantDetails extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ResturantDetails() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResturantDetails.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ResturantDetails newInstance(String param1, String param2) {
-        ResturantDetails fragment = new ResturantDetails();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+public class ResturantDetails extends AppCompatActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setContentView(R.layout.activity_resturant_details);
+        Bundle extras = getIntent().getExtras();
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+        if(extras!=null){
+            String name = extras.getString("name");
+            TextView name_view = findViewById(R.id.name);
+            name_view.setText(name);
+            Double lat = (Double) extras.get("lat");
+            Log.d("TAG",lat.toString());
+            Double lng = (Double) extras.get("lng");
+            Log.d("TAG",lng.toString());
+            try {
+                addresses = geocoder.getFromLocation(lat, lng, 1);
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName();
+                TextView add = findViewById(R.id.address);
+                add.setText(address);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_resturant_details, container, false);
     }
 }

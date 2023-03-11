@@ -3,12 +3,14 @@ package com.example.resadvisor;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -111,15 +113,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String markerName = marker.getTitle();
 
                 Toast.makeText(MapsActivity.this, "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
-                Intent intent
-                        = new Intent(MapsActivity.this,
-                        MainActivity.class);
+                Intent intent = new Intent(MapsActivity.this, ResturantDetails.class);
+                intent.putExtra("name",markerName);
+                intent.putExtra("lat",marker.getPosition().latitude);
+                intent.putExtra("lng",marker.getPosition().longitude);
                 startActivity(intent);
-//                Navigation.createNavigateOnClickListener(R.id.action_maps_to_resturantdetails);
-//                Intent intent
-//                        = new Intent(MapsActivity.this,
-//                        MainActivity.class);
-//                startActivity(intent);
+
                 return false;
             }
         });
