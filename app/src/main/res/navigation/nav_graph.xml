@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_posts_list" >
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
-            app:destination="@id/addPostFragment2" />
+            app:destination="@id/addPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"

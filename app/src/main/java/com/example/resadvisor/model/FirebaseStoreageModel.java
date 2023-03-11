@@ -2,6 +2,7 @@ package com.example.resadvisor.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -13,24 +14,28 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+
 public class FirebaseStoreageModel {
     FirebaseStorage storage;
-    FirebaseStoreageModel(){
+
+    FirebaseStoreageModel() {
         storage = FirebaseStorage.getInstance();
     }
-    void getImage(String path,ImageView img){
+
+    void getImage(String path, ImageView img) {
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
-        StorageReference imgRef = mStorageRef.child("images/"+path+".jpg");
+        StorageReference imgRef = mStorageRef.child("images/" + path + ".jpg");
         final long ONE_MEGABYTE = 1024 * 1024;
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>(){
+        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
-            public void onSuccess(byte[] bytes){
+            public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 img.setImageBitmap(bmp);
             }
         });
     }
-    void uploadImage(String name, byte[] data,Model.Listener<String> listener){
+    void uploadImage(String name, byte[] data, Model.Listener<String> listener) {
         StorageReference storageRef = storage.getReference();
         StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
 
@@ -38,36 +43,17 @@ public class FirebaseStoreageModel {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("TAG","Did not succeed to upload!");
+                Log.d("TAG", "Did not succeed to upload!");
                 // Handle unsuccessful uploads
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("TAG","Succeed to upload!");
+                Log.d("TAG", "Succeed to upload!");
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...
             }
         });
 
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-////                listener.onComplete(null);
-//                Log.d("TAG","Did not succeed to upload!");
-//
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        listener.onComplete(uri.toString());
-//                        Log.d("TAG","Succeed to upload!");
-//                    }
-//                });
-//            }
-//        });
     }
 }
