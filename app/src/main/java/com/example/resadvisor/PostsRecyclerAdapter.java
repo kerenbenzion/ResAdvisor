@@ -35,6 +35,8 @@ class PostViewHolder extends RecyclerView.ViewHolder{
         price = itemView.findViewById(R.id.postslistrow_price);
         email = itemView.findViewById(R.id.postslistrow_email);
         Button convert = itemView.findViewById(R.id.postslistrow_convert_btn);
+        Button editPost = itemView.findViewById(R.id.postslistrow_editPost_btn);
+
         this.data = data;
         priceInNis = true;
         convert.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +46,13 @@ class PostViewHolder extends RecyclerView.ViewHolder{
                 Post post = data.get(pos);
                 price.setText(priceInNis ? post.price_usd + " $" : post.price + " NIS");
                 priceInNis = !priceInNis;
+            }
+        });
+        editPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = (int)price.getTag();
+                Post post = data.get(pos);
             }
         });
     }
