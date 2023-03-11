@@ -52,4 +52,9 @@
         android:name="com.example.resadvisor.UserPostsListFragment"
         android:label="My posts"
         tools:layout="@layout/fragment_user_posts_list" />
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.example.resadvisor.EditPostFragment"
+        android:label="My posts"
+        tools:layout="@layout/fragment_edit_post" />
 </navigation>

@@ -1,6 +1,8 @@
 package com.example.resadvisor;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.resadvisor.model.Model;
@@ -35,7 +42,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
         price = itemView.findViewById(R.id.postslistrow_price);
         email = itemView.findViewById(R.id.postslistrow_email);
         Button convert = itemView.findViewById(R.id.postslistrow_convert_btn);
-        Button editPost = itemView.findViewById(R.id.postslistrow_editPost_btn);
+        Button editPostBtn = itemView.findViewById(R.id.postslistrow_editPost_btn);
 
         this.data = data;
         priceInNis = true;
@@ -48,11 +55,17 @@ class PostViewHolder extends RecyclerView.ViewHolder{
                 priceInNis = !priceInNis;
             }
         });
-        editPost.setOnClickListener(new View.OnClickListener() {
+        editPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = (int)price.getTag();
                 Post post = data.get(pos);
+                EditPostFragment editPost = new EditPostFragment();
+                editPost.setPost(post);
+
+                AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
+                activity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.editPostFragment,editPost).addToBackStack(null).commit();
             }
         });
     }
