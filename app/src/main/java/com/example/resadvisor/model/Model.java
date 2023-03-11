@@ -57,6 +57,11 @@ public class Model {
         firestore.getUserPosts(callback, userEmail);
     }
 
+    public Post getPost (String postId){
+        return firestore.getPost(postId);
+
+    }
+
     public void addPost(Post post)
     {
         data.add(post);

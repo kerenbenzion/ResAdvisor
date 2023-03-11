@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.example.resadvisor.model.Firestore;
 
@@ -47,7 +48,7 @@ import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class AddPostFragment extends Fragment {
+public class EditPostFragment extends Fragment {
     int SELECT_PICTURE = 200;
     ImageView IVPreviewImage;
     @Override
@@ -132,38 +133,44 @@ public class AddPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        String postId = "dOUSxt5CFt5VzUYmxvoh";
+        Post post = Model.instance().getPost(postId);
 
-        View view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
-        IVPreviewImage = view.findViewById(R.id.addpost_uploaded_picture);
-        EditText titleEt = view.findViewById(R.id.addpost_title_et);
-        EditText descEt = view.findViewById(R.id.addpost_desc_et);
-        EditText priceEt = view.findViewById(R.id.addpost_price_et);
-        EditText res_nameEt = view.findViewById(R.id.addpost_res_name_et);
-        EditText res_addressEt = view.findViewById(R.id.addpost_res_address_et);
-
-        Button saveBtn = view.findViewById(R.id.addpost_save_btn);
-        Button add_image = view.findViewById(R.id.addpost_add_image);
-        //When clicked - move to list page
-        Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
-        add_image.setOnClickListener(view1->{
-            image_chooser();
-        });
-        saveBtn.setOnClickListener(view1 -> {
-            String title = titleEt.getText().toString();
-            String desc = descEt.getText().toString();
-            Integer price = Integer.parseInt(priceEt.getText().toString());
-            String res_name = res_nameEt.getText().toString();
-            String res_address = res_addressEt.getText().toString();
-            DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
-            String collection_id = ref.getId();
-            getUSD(collection_id, title, desc, price,res_name,res_address);
-            Toast.makeText(getContext(),
-                            "Upload post successfully",
-                            Toast.LENGTH_LONG)
-                    .show();
-
-        });
+        EditText et_title = view.findViewById(R.id.editpost_title_et);
+        et_title.setText(post.title);
+        EditText et_desc = view.findViewById(R.id.editpost_desc_et);
+        et_desc.setText(post.description);
+        EditText et_price = view.findViewById(R.id.editpost_price_et);
+        et_price.setText(post.price);
+        EditText et_res_name = view.findViewById(R.id.editpost_res_name_et);
+        et_res_name.setText(post.res_name);
+        EditText et_res_address = view.findViewById(R.id.editpost_res_address_et);
+        et_res_address.setText(post.res_address);
+//
+//        Button saveBtn = view.findViewById(R.id.addpost_save_btn);
+//        Button add_image = view.findViewById(R.id.addpost_add_image);
+//        //When clicked - move to list page
+//        Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
+//        add_image.setOnClickListener(view1->{
+//            image_chooser();
+//        });
+//        saveBtn.setOnClickListener(view1 -> {
+//            String title = titleEt.getText().toString();
+//            String desc = descEt.getText().toString();
+//            Integer price = Integer.parseInt(priceEt.getText().toString());
+//            String res_name = res_nameEt.getText().toString();
+//            String res_address = res_addressEt.getText().toString();
+//            DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
+//            String collection_id = ref.getId();
+//            getUSD(collection_id, title, desc, price,res_name,res_address);
+//            Toast.makeText(getContext(),
+//                            "Upload post successfully",
+//                            Toast.LENGTH_LONG)
+//                    .show();
+//
+//        });
         return view;
 
     }

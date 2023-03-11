@@ -93,4 +93,25 @@ public class Firestore {
                 });
     }
 
+    public Post getPost(String postId){
+        List<Post> list = new LinkedList<>();
+        db.collection("published_posts")
+                .whereEqualTo(Post.ID, postId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            QuerySnapshot jsonsList = task.getResult();
+                            for (DocumentSnapshot json: jsonsList){
+                                Post st = Post.fromJson(json.getData());
+                                list.add(st);
+                            }
+                        }
+                    }
+                });
+        return list.get(0);
+
+    }
+
 }
