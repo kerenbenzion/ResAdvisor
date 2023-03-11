@@ -16,6 +16,7 @@ import com.example.resadvisor.model.Post;
 
 import java.util.List;
 
+
 class PostViewHolder extends RecyclerView.ViewHolder{
 
     TextView title;

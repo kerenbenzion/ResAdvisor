@@ -50,7 +50,11 @@ public class Model {
     public void getAllPosts(GetAllPostsListener callback)
     {
         firestore.getAllPosts(callback);
-        //callback.onComplete(data);
+    }
+
+    public void getUserPosts(GetAllPostsListener callback, String userEmail)
+    {
+        firestore.getUserPosts(callback, userEmail);
     }
 
     public void addPost(Post post)

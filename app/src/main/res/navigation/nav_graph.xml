@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
             app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_postsListFragment_to_userPostsListFragment"
+            app:destination="@id/userPostsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -44,8 +47,9 @@
             android:id="@+id/action_maps_to_resturantdetails"
             app:destination="@id/profileFragment" />
     </fragment>
-
-
-
-
+    <fragment
+        android:id="@+id/userPostsListFragment"
+        android:name="com.example.resadvisor.UserPostsListFragment"
+        android:label="fragment_user_posts_list"
+        tools:layout="@layout/fragment_user_posts_list" />
 </navigation>
