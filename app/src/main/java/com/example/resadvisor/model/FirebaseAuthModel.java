@@ -1,5 +1,9 @@
 package com.example.resadvisor.model;
 
+import android.content.Intent;
+
+import com.example.resadvisor.LoginActivity;
+import com.example.resadvisor.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
