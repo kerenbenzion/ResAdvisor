@@ -50,7 +50,11 @@ public class Model {
     public void getAllPosts(GetAllPostsListener callback)
     {
         firestore.getAllPosts(callback);
-        //callback.onComplete(data);
+    }
+
+    public void getUserPosts(GetAllPostsListener callback, String userEmail)
+    {
+        firestore.getUserPosts(callback, userEmail);
     }
 
     public void addPost(Post post)
@@ -58,12 +62,6 @@ public class Model {
         data.add(post);
     }
 
-//    public void addStudent(Student st, <Void> listener){
-//        firebaseModel.addStudent(st,(Void)->{
-//            refreshAllStudents();
-//            listener.onComplete(null);
-//        });
-//    }
     public FirebaseUser getcurrent(){
         return authModel.getUser();
     }

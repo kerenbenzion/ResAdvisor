@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
             app:destination="@id/addPostFragment2" />
+        <action
+            android:id="@+id/action_postsListFragment_to_userPostsListFragment"
+            app:destination="@id/userPostsListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment2"
         android:name="com.example.resadvisor.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" />
+    <fragment
+        android:id="@+id/userPostsListFragment"
+        android:name="com.example.resadvisor.UserPostsListFragment"
+        android:label="fragment_user_posts_list"
+        tools:layout="@layout/fragment_user_posts_list" />
 </navigation>
