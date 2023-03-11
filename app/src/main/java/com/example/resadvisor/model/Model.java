@@ -71,6 +71,10 @@ public class Model {
     public void uploadImage(String name, byte[] data, Listener<String> listener) {
         firebaseModel.uploadImage(name,data,listener);
     }
+//    public void updateImage(String name, byte[] data, Listener<String> listener) {
+//        firebaseModel.editUserProfilePic(name,data,listener);
+//    }
+
     public void getBitMap(String path, ImageView img) {
         firebaseModel.getImage(path,img);
     }

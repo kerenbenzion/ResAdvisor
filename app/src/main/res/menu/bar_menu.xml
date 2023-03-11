@@ -6,6 +6,11 @@
         android:icon="@android:drawable/ic_input_add"
         android:title="Add post" />
     <item
+        android:id="@+id/profileFragment"
         android:icon="@android:drawable/checkbox_on_background"
         android:title="About" />
+    <item
+        android:id="@+id/map2"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Map" />
 </menu>

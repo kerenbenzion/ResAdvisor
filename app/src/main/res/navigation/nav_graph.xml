@@ -11,16 +11,42 @@
         tools:layout="@layout/fragment_posts_list" >
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
-            app:destination="@id/addPostFragment2" />
+            app:destination="@id/addPostFragment" />
         <action
             android:id="@+id/action_postsListFragment_to_userPostsListFragment"
             app:destination="@id/userPostsListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addPostFragment2"
+        android:id="@+id/addPostFragment"
         android:name="com.example.resadvisor.AddPostFragment"
-        android:label="fragment_add_post"
+        android:label="Add Post"
         tools:layout="@layout/fragment_add_post" />
+    <action android:id="@+id/action_global_addPostFragment" app:destination="@id/addPostFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.resadvisor.ProfileFragment"
+        android:label="Add Post"
+        tools:layout="@layout/fragment_profile" />
+    <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
+
+    <activity
+        android:id="@+id/map2"
+        android:name="com.example.resadvisor.MapsActivity"
+        android:label="@string/title_activity_maps"
+        tools:layout="@layout/activity_maps" />
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:layout_below="@+id/linerLayout"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <action
+            android:id="@+id/action_maps_to_resturantdetails"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userPostsListFragment"
         android:name="com.example.resadvisor.UserPostsListFragment"

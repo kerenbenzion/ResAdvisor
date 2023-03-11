@@ -138,7 +138,7 @@ public class Signup_activity extends AppCompatActivity {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                             byte[] data = baos.toByteArray();
-                            Model.instance().uploadImage(firstname+"_"+lastname,data,url->Log.d("TAG","Start to upload"));
+                            Model.instance().uploadImage(Model.instance().getcurrent().getUid()+"_",data,url->Log.d("TAG","Start to upload"));
 
                             FirebaseUser user =Model.instance().getcurrent();
                             UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(firstname).build();
