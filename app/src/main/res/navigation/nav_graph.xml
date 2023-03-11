@@ -27,10 +27,25 @@
     <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
 
     <activity
-        android:id="@+id/map"
+        android:id="@+id/map2"
         android:name="com.example.resadvisor.MapsActivity"
         android:label="@string/title_activity_maps"
         tools:layout="@layout/activity_maps" />
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:layout_below="@+id/linerLayout"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <action
+            android:id="@+id/action_maps_to_resturantdetails"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+
 
 
 </navigation>
