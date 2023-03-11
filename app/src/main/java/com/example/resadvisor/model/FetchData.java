@@ -47,6 +47,7 @@ public class FetchData extends AsyncTask<Object,String,String> {
                 MarkerOptions markerOptions  = new MarkerOptions();
                 markerOptions.title(name);
                 markerOptions.position(latLng);
+
                 googleMap.addMarker(markerOptions);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
             }

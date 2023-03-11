@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("TAG", "Kereneeeeee");
         Log.d("TAG", String.valueOf(item.getItemId()));
         if (item.getItemId() == android.R.id.home){
             navController.popBackStack();
