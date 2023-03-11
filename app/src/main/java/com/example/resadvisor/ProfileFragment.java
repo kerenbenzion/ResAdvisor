@@ -4,7 +4,6 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,7 +17,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 
-import android.provider.MediaStore;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.LayoutInflater;
@@ -29,29 +28,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.resadvisor.model.Firestore;
 import com.example.resadvisor.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.resadvisor.model.FirebaseAuthModel;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.storage.FirebaseStorage;
-import com.example.resadvisor.model.FirebaseStoreageModel;
-
-import org.checkerframework.common.subtyping.qual.Bottom;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 
 public class ProfileFragment extends Fragment {
@@ -89,28 +76,33 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, "Password");
         Log.d(TAG, password);
         AuthCredential credential = EmailAuthProvider.getCredential(email, newPass);
-        user.updatePassword(newPass)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User password updated.");
-                            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "User re-authenticated.");
+
+                    user.updatePassword(newPass)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Log.d(TAG, "User re-authenticated.");
+                                        Log.d(TAG, "User password updated.");
+                                        Toast.makeText(getContext(),
+                                                        "User password updated.",
+                                                        Toast.LENGTH_LONG)
+                                                .show();
+
                                     } else {
-                                        Log.d("TAG", "Did not e-authenticate");
+                                        Log.d("TAG", "User did not change password");
                                     }
                                 }
                             });
-
-                        } else {
-                            Log.d("TAG", "User did not change password");
-                        }
-                    }
-                });
+                } else {
+                    Log.d("TAG", "Did not e-authenticate");
+                }
+            }
+        });
 
     }
     private void image_chooser() {
@@ -168,6 +160,11 @@ public class ProfileFragment extends Fragment {
             bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             Model.instance().uploadImage(Model.instance().getcurrent().getUid()+"_",data,url->Log.d("TAG","Start to upload"));
+            Model.instance().getBitMap(Model.instance().getcurrent().getUid()+"_",IVPreviewImage);
+            Toast.makeText(getContext(),
+                            "User profile image updated.",
+                            Toast.LENGTH_LONG)
+                    .show();
         });
         return rootView;
     }
@@ -184,7 +181,6 @@ public class ProfileFragment extends Fragment {
                 if (null != selectedImageUri) {
                     // update the preview image in the layout
                     IVPreviewImage.setImageURI(selectedImageUri);
-                    Model.instance().getBitMap(Model.instance().getcurrent().getUid()+"_",IVPreviewImage);
 
                 }
             }
