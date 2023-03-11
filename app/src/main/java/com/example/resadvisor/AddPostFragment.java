@@ -174,8 +174,6 @@ public class AddPostFragment extends Fragment {
         });
         return view;
 
-
-
     }
 
     private void image_chooser() {

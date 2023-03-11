@@ -9,4 +9,8 @@
         android:id="@+id/profileFragment"
         android:icon="@android:drawable/checkbox_on_background"
         android:title="About" />
+    <item
+        android:id="@+id/map"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="Map" />
 </menu>

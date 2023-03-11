@@ -25,4 +25,12 @@
         android:label="Add Post"
         tools:layout="@layout/fragment_profile" />
     <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
+
+    <activity
+        android:id="@+id/map"
+        android:name="com.example.resadvisor.MapsActivity"
+        android:label="@string/title_activity_maps"
+        tools:layout="@layout/activity_maps" />
+
+
 </navigation>
