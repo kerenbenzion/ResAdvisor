@@ -58,12 +58,6 @@ public class Model {
         data.add(post);
     }
 
-//    public void addStudent(Student st, <Void> listener){
-//        firebaseModel.addStudent(st,(Void)->{
-//            refreshAllStudents();
-//            listener.onComplete(null);
-//        });
-//    }
     public FirebaseUser getcurrent(){
         return authModel.getUser();
     }
@@ -73,6 +67,10 @@ public class Model {
     public void uploadImage(String name, byte[] data, Listener<String> listener) {
         firebaseModel.uploadImage(name,data,listener);
     }
+    public void updateImage(String name, byte[] data, Listener<String> listener) {
+        firebaseModel.editUserProfilePic(name,data,listener);
+    }
+
     public void getBitMap(String path, ImageView img) {
         firebaseModel.getImage(path,img);
     }
