@@ -29,16 +29,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.example.resadvisor.model.Firestore;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-//import java.net.HttpsURLConnection;
 import java.net.URL;
 
 import com.example.resadvisor.model.Post;
@@ -73,7 +69,7 @@ public class EditPostFragment extends Fragment {
 
 
 
-    private void getUSD(String collection_id,String title,String desc,Integer price,String res_name,
+    private void updatePost(String post_id,String title,String desc,Integer price,String res_name,
                         String res_address) {
         Thread usdThread = new Thread(new Runnable() {
             @Override
@@ -101,8 +97,8 @@ public class EditPostFragment extends Fragment {
 
                         Double price_usd = Double.parseDouble(currency_response)*price;
                         String email = Model.instance().getcurrent().getEmail();
-                        String picpath = collection_id+"_"+title+"_"+email.split("@")[0];
-                        Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
+                        String picpath = post_id+"_"+title+"_"+email.split("@")[0];
+                        Post.addPost(post_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
                         Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -148,29 +144,28 @@ public class EditPostFragment extends Fragment {
         et_res_name.setText(post.res_name);
         EditText et_res_address = view.findViewById(R.id.editpost_res_address_et);
         et_res_address.setText(post.res_address);
-//
-//        Button saveBtn = view.findViewById(R.id.addpost_save_btn);
-//        Button add_image = view.findViewById(R.id.addpost_add_image);
-//        //When clicked - move to list page
-//        Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
-//        add_image.setOnClickListener(view1->{
-//            image_chooser();
-//        });
-//        saveBtn.setOnClickListener(view1 -> {
-//            String title = titleEt.getText().toString();
-//            String desc = descEt.getText().toString();
-//            Integer price = Integer.parseInt(priceEt.getText().toString());
-//            String res_name = res_nameEt.getText().toString();
-//            String res_address = res_addressEt.getText().toString();
-//            DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
-//            String collection_id = ref.getId();
-//            getUSD(collection_id, title, desc, price,res_name,res_address);
-//            Toast.makeText(getContext(),
-//                            "Upload post successfully",
-//                            Toast.LENGTH_LONG)
-//                    .show();
-//
-//        });
+
+        Button saveBtn = view.findViewById(R.id.editpost_save_btn);
+        Button add_image = view.findViewById(R.id.editpost_add_image);
+
+        add_image.setOnClickListener(view1->{
+            image_chooser();
+        });
+
+        saveBtn.setOnClickListener(view1 -> {
+            String title = et_title.getText().toString();
+            String desc = et_desc.getText().toString();
+            Integer price = Integer.parseInt(et_price.getText().toString());
+            String res_name = et_res_name.getText().toString();
+            String res_address = et_res_address.getText().toString();
+
+            updatePost(postId, title, desc, price,res_name,res_address);
+            Toast.makeText(getContext(),
+                            "Update post successfully",
+                            Toast.LENGTH_LONG)
+                    .show();
+
+        });
         return view;
 
     }
