@@ -11,13 +11,20 @@
         tools:layout="@layout/fragment_posts_list" >
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
-            app:destination="@id/addPostFragment2" />
+            app:destination="@id/addPostFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addPostFragment2"
+        android:id="@+id/addPostFragment"
         android:name="com.example.resadvisor.AddPostFragment"
-        android:label="fragment_add_post"
+        android:label="Add Post"
         tools:layout="@layout/fragment_add_post" />
+    <action android:id="@+id/action_global_addPostFragment" app:destination="@id/addPostFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.resadvisor.ProfileFragment"
+        android:label="Add Post"
+        tools:layout="@layout/fragment_profile" />
+    <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
 
     <activity
         android:id="@+id/map"
