@@ -16,6 +16,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.graphics.ColorSpace;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,6 +73,26 @@ public class Firestore {
                     }
                 });
     }
+
+    public void getAllResturants(Model.GetAllResturantsListener callback){
+        db.collection("resturants")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<Resturant> list = new LinkedList<>();
+                        if (task.isSuccessful()){
+                            QuerySnapshot jsonsList = task.getResult();
+                            for (DocumentSnapshot json: jsonsList){
+                                Resturant st = Resturant.fromJson(json.getData());
+                                list.add(st);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+                });
+    }
+
 
     public void getUserPosts(Model.GetAllPostsListener callback, String userEmail){
         db.collection("published_posts")
