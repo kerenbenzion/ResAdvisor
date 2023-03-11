@@ -47,6 +47,10 @@ public class Model {
     public interface GetAllPostsListener{
         void onComplete(List<Post> data);
     }
+    public interface GetAllResturantsListener{
+        void onComplete(List<Resturant> data);
+    }
+
     public void getAllPosts(GetAllPostsListener callback)
     {
         firestore.getAllPosts(callback);
@@ -55,6 +59,11 @@ public class Model {
     public void getUserPosts(GetAllPostsListener callback, String userEmail)
     {
         firestore.getUserPosts(callback, userEmail);
+    }
+
+    public void getAllResturants(GetAllResturantsListener callback)
+    {
+        firestore.getAllResturants(callback);
     }
 
     public void addPost(Post post)

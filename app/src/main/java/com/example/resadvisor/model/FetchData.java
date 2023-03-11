@@ -12,11 +12,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FetchData extends AsyncTask<Object,String,String> {
     String googleNearByPlacersData;
     GoogleMap googleMap;
     String url;
+    List<Resturant> resturantList =new ArrayList<>();
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -25,6 +28,7 @@ public class FetchData extends AsyncTask<Object,String,String> {
             url = (String) objects[1];
             DownloadUrl downloadUrl = new DownloadUrl();
             googleNearByPlacersData = downloadUrl.retrieveUrl(url);
+
         } catch (IOException e){
             e.printStackTrace();
         }
