@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/postsListFragment"
         android:name="com.example.resadvisor.PostsListFragment"
-        android:label="fragment_posts_list"
-        tools:layout="@layout/fragment_posts_list" >
+        android:label="Posts list"
+        tools:layout="@layout/fragment_posts_list">
         <action
             android:id="@+id/action_postsListFragment_to_addPostFragment2"
             app:destination="@id/addPostFragment" />
@@ -50,6 +50,6 @@
     <fragment
         android:id="@+id/userPostsListFragment"
         android:name="com.example.resadvisor.UserPostsListFragment"
-        android:label="fragment_user_posts_list"
+        android:label="My posts"
         tools:layout="@layout/fragment_user_posts_list" />
 </navigation>
