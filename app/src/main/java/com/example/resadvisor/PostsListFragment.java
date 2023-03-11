@@ -2,12 +2,20 @@ package com.example.resadvisor;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,6 +29,26 @@ public class PostsListFragment extends Fragment {
 
     List<Post> data = new LinkedList<>();
     PostsRecyclerAdapter adapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        FragmentActivity parentActivity = getActivity();
+
+        parentActivity.addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menu.removeItem(R.id.postsListFragment);
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                return false;
+            }
+        },this, Lifecycle.State.RESUMED);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -39,13 +67,7 @@ public class PostsListFragment extends Fragment {
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(adapter);
 
-
-        View addBtn = view.findViewById(R.id.postslistfrag_add_btn);
-        addBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_postsListFragment_to_addPostFragment2));
-
-        View myPostsBtn = view.findViewById(R.id.postslistfrag_myposts_btn);
-        myPostsBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_postsListFragment_to_userPostsListFragment));
-
         return view;
     }
+
 }
