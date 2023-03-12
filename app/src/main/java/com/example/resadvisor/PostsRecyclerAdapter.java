@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.resadvisor.model.Model;
@@ -55,17 +56,22 @@ class PostViewHolder extends RecyclerView.ViewHolder{
                 priceInNis = !priceInNis;
             }
         });
+//        editPostBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userPostsListFragment_to_editPostFragment));
+
+
         editPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 int pos = (int)price.getTag();
                 Post post = data.get(pos);
                 EditPostFragment editPost = new EditPostFragment();
                 editPost.setPost(post);
 
-                AppCompatActivity activity = (AppCompatActivity) itemView.getContext();
-                activity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.editPostFragment,editPost).addToBackStack(null).commit();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.postslistrow_editPost_btn, editPost).addToBackStack(null).commit();
+
+//                Navigation.createNavigateOnClickListener(R.id.action_userPostsListFragment_to_editPostFragment);
+
             }
         });
     }

@@ -60,7 +60,7 @@ public class EditPostFragment extends Fragment {
         parentActivity.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.removeItem(R.id.addPostFragment);
+                menu.removeItem(R.id.editPostFragment);
             }
 
             @Override
@@ -140,7 +140,7 @@ public class EditPostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
         EditText et_title = view.findViewById(R.id.editpost_title_et);
-        et_title.setText(post.title);
+        et_title.setText("lalal");
         EditText et_desc = view.findViewById(R.id.editpost_desc_et);
         et_desc.setText(post.description);
         EditText et_price = view.findViewById(R.id.editpost_price_et);
