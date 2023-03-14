@@ -54,7 +54,7 @@ public class PostsListFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
-        adapter = new PostsRecyclerAdapter(getLayoutInflater(), data);
+        adapter = new PostsRecyclerAdapter(getLayoutInflater(), data, false);
 
         Model.instance().getAllPosts((postsList)->{
             data = postsList;

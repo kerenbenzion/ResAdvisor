@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 
 public class Post {
+    public String id;
     public String title;
     public String description;
     public String price;
@@ -19,8 +20,9 @@ public class Post {
     public String res_address;
     public String email;
     public String pic_path;
-    public Post( String title, String description, String price, String priceUsd,
+    public Post( String id, String title, String description, String price, String priceUsd,
                 String res_name, String res_address,String email,String pic_path) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
@@ -34,6 +36,7 @@ public class Post {
     public static void addPost(String id, String title, String description, Integer price,
                                String res_name, String res_address, Double price_usd,String email,String picpath) {
         Map<String, Object> data = new HashMap<>();
+        data.put("id", id);
         data.put("email", email);
         data.put("title", title);
         data.put("description", description);
@@ -57,6 +60,7 @@ public class Post {
                 });
     }
 
+    static final String ID = "id";
     static final String TITLE = "title";
     static final String DESCRIPTION = "description";
     static final String PRICE = "price";
@@ -66,6 +70,7 @@ public class Post {
     static final String EMAIL = "email";
     static final String PICTURE = "pic_path";
     public static Post fromJson(Map<String,Object> json){
+        String id = (String)json.get(ID);
         String title = (String)json.get(TITLE);
         String description = (String)json.get(DESCRIPTION);
         String price = String.valueOf(json.get(PRICE));
@@ -74,7 +79,7 @@ public class Post {
         String res_address = (String) json.get(RESADDRESS);
         String email = (String)json.get(EMAIL);
         String pic_path = (String)json.get(PICTURE);
-        Post post = new Post(title, description, price, priceUsd, res_name, res_address ,email,pic_path);
+        Post post = new Post(id, title, description, price, priceUsd, res_name, res_address ,email,pic_path);
 
         return post;
     }

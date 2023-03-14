@@ -128,4 +128,13 @@
         app:layout_constraintStart_toEndOf="@+id/postslistrow_img"
         app:layout_constraintTop_toBottomOf="@+id/postslistrow_price" />
 
+    <Button
+        android:id="@+id/postslistrow_editPost_btn"
+        android:layout_width="80dp"
+        android:layout_height="45dp"
+        android:text="edit post"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="315dp"
+        tools:layout_editor_absoluteY="93dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.core.os.HandlerCompat;
@@ -59,6 +60,11 @@ public class Model {
     public void getUserPosts(GetAllPostsListener callback, String userEmail)
     {
         firestore.getUserPosts(callback, userEmail);
+    }
+
+    public void getPost (String postId, EditText et_title, EditText et_desc, EditText et_price,
+                         EditText et_res_name, EditText et_res_address, ImageView imgView){
+        firestore.getPost(postId, et_title, et_desc, et_price, et_res_name, et_res_address, imgView);
     }
 
     public void getAllResturants(GetAllResturantsListener callback)
