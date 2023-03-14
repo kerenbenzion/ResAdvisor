@@ -131,7 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // which is clicked and displaying it in a toast message.
                 String markerName = marker.getTitle();
 
-                Toast.makeText(MapsActivity.this, "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MapsActivity.this, "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MapsActivity.this, ResturantDetails.class);
                 intent.putExtra("name",markerName);
                 intent.putExtra("lat",marker.getPosition().latitude);
@@ -165,14 +165,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @SuppressLint("MissingSuperCall")
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                Toast.makeText(getApplicationContext(),"location result is="+locationResult,Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"location result is="+locationResult,Toast.LENGTH_LONG).show();
                 if(locationResult==null){
-                    Toast.makeText(getApplicationContext(),"Current location is null",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(),"Current location is null",Toast.LENGTH_LONG).show();
                     return;
                 }
                 for(Location location:locationResult.getLocations()){
                     if(location!=null){
-                        Toast.makeText(getApplicationContext(),"Current location is "+location.getLongitude(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),"Current location is "+location.getLongitude(),Toast.LENGTH_LONG).show();
                     }
                 }
             }

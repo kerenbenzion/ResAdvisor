@@ -55,8 +55,9 @@ public class Firestore {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getAllPosts(Model.GetAllPostsListener callback){
-        db.collection("published_posts")
+    public void getAllPostsSince(Long since,Model.GetAllPostsListener callback){
+        db.collection("posts")
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED, new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -95,7 +96,7 @@ public class Firestore {
 
 
     public void getUserPosts(Model.GetAllPostsListener callback, String userEmail){
-        db.collection("published_posts")
+        db.collection("posts")
                 .whereEqualTo(Post.EMAIL, userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
