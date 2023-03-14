@@ -5,6 +5,8 @@ import static android.app.Activity.RESULT_OK;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
+import com.example.resadvisor.model.Resturant;
 import com.google.firebase.firestore.DocumentReference;
 import com.example.resadvisor.model.Firestore;
 
@@ -39,8 +42,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 //import java.net.HttpsURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
 
 import com.example.resadvisor.model.Post;
+import com.google.firebase.firestore.GeoPoint;
 
 import org.json.JSONObject;
 
@@ -50,15 +56,17 @@ import javax.net.ssl.HttpsURLConnection;
 public class AddPostFragment extends Fragment {
     int SELECT_PICTURE = 200;
     ImageView IVPreviewImage;
+    Geocoder geocoder;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FragmentActivity parentActivity = getActivity();
-
+        geocoder = new Geocoder(this.getContext());
         parentActivity.addMenuProvider(new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
                 menu.removeItem(R.id.addPostFragment);
+
             }
 
             @Override
@@ -73,7 +81,7 @@ public class AddPostFragment extends Fragment {
 
 
     private void getUSD(String collection_id,String title,String desc,Integer price,String res_name,
-                        String res_address) {
+                        String res_address,String resturant_id) {
         Thread usdThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -101,6 +109,20 @@ public class AddPostFragment extends Fragment {
                         Double price_usd = Double.parseDouble(currency_response)*price;
                         String email = Model.instance().getcurrent().getEmail();
                         String picpath = collection_id+"_"+title+"_"+email.split("@")[0];
+
+                        List<Address> addressList;
+                        try {
+                            addressList = geocoder.getFromLocationName(res_address,1);
+                            if(addressList != null){
+                                Double lat =addressList.get(0).getLatitude();
+                                Double lng =addressList.get(0).getLongitude();
+                                GeoPoint geoPoint = new GeoPoint(lat,lng);
+                                Resturant.addResturant(res_name,res_address,resturant_id,geoPoint);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
                         Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -155,9 +177,12 @@ public class AddPostFragment extends Fragment {
             Integer price = Integer.parseInt(priceEt.getText().toString());
             String res_name = res_nameEt.getText().toString();
             String res_address = res_addressEt.getText().toString();
+            DocumentReference ref_resturant = Firestore.instance().getDb().collection("resturants").document();
+
             DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
             String collection_id = ref.getId();
-            getUSD(collection_id, title, desc, price,res_name,res_address);
+            String resturant_id = ref_resturant.getId();
+            getUSD(collection_id, title, desc, price,res_name,res_address,resturant_id);
             Toast.makeText(getContext(),
                             "Upload post successfully",
                             Toast.LENGTH_LONG)

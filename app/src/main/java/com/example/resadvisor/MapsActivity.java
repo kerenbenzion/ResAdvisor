@@ -24,6 +24,9 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.example.resadvisor.model.FetchData;
+import com.example.resadvisor.model.Model;
+import com.example.resadvisor.model.Post;
+import com.example.resadvisor.model.Resturant;
 import com.google.android.gms.location.LocationRequest;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,6 +46,8 @@ import com.example.resadvisor.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
@@ -52,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int Request_code = 101;
     private double lat,lng;
     private ImageButton rest;
+    List<Resturant> data = new LinkedList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,18 +74,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         rest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-                stringBuilder.append("location="+lat+","+lng);
-                stringBuilder.append("&radius=1000");
-                stringBuilder.append("&type=resturants");
-                stringBuilder.append("&sensor=true");
-                stringBuilder.append("&key=AIzaSyC6EhqlaDNoCw18BNtCISfspTE66CP2ym0");
-                String url  = stringBuilder.toString();
-                Object dataFetch[] = new Object[2];
-                dataFetch[0] = mMap;
-                dataFetch[1] = url;
-                FetchData fetchData = new FetchData();
-                fetchData.execute(dataFetch);
+                Model.instance().getAllResturants((reslist)->{
+                    data = reslist;
+                });
+                for (Resturant resturant:data) {
+                    String name = resturant.name;
+                    LatLng latLng = new LatLng(resturant.geo.getLatitude(),resturant.geo.getLongitude());
+                    MarkerOptions markerOptions  = new MarkerOptions();
+                    markerOptions.title(name);
+                    markerOptions.position(latLng);
+                    mMap.addMarker(markerOptions);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                }
+//                StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+//                stringBuilder.append("location="+lat+","+lng);
+//                stringBuilder.append("&radius=1000");
+//                stringBuilder.append("&type=resturants");
+//                stringBuilder.append("&sensor=true");
+//                stringBuilder.append("&key=AIzaSyC6EhqlaDNoCw18BNtCISfspTE66CP2ym0");
+//                String url  = stringBuilder.toString();
+//                Object dataFetch[] = new Object[2];
+//                dataFetch[0] = mMap;
+//                dataFetch[1] = url;
+//                FetchData fetchData = new FetchData();
+//                fetchData.execute(dataFetch);
+
 
             }
         });

@@ -48,6 +48,10 @@ public class Model {
     public interface GetAllPostsListener{
         void onComplete(List<Post> data);
     }
+    public interface GetAllResturantsListener{
+        void onComplete(List<Resturant> data);
+    }
+
     public void getAllPosts(GetAllPostsListener callback)
     {
         firestore.getAllPosts(callback);
@@ -61,6 +65,11 @@ public class Model {
     public void getPost (String postId, EditText et_title, EditText et_desc, EditText et_price,
                          EditText et_res_name, EditText et_res_address, ImageView imgView){
         firestore.getPost(postId, et_title, et_desc, et_price, et_res_name, et_res_address, imgView);
+    }
+
+    public void getAllResturants(GetAllResturantsListener callback)
+    {
+        firestore.getAllResturants(callback);
     }
 
     public void addPost(Post post)

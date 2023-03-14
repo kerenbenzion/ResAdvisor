@@ -132,7 +132,16 @@ public class ProfileFragment extends Fragment {
         passwordTextView = rootView.findViewById(R.id.profileCurrentPass);
         updatedPasswordTextView = rootView.findViewById(R.id.profileUpdatePass);
 
+        Button signout = rootView.findViewById(R.id.profile_logout);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Model.instance().signout();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
 
+            }
+        });
         Button updatePass = rootView.findViewById(R.id.profile_change_pass_btn);
 
         updatePass.setOnClickListener(new View.OnClickListener() {

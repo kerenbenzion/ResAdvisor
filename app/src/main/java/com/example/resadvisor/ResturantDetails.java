@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +39,13 @@ public class ResturantDetails extends AppCompatActivity {
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName();
                 TextView add = findViewById(R.id.address);
+                TextView city1 = findViewById(R.id.city);
+                TextView country1 = findViewById(R.id.country);
+                TextView postalCode1 = findViewById(R.id.zipcode);
                 add.setText(address);
+                city1.setText(city);
+                country1.setText(country);
+                postalCode1.setText(postalCode);
             } catch (IOException e) {
                 e.printStackTrace();
             }
