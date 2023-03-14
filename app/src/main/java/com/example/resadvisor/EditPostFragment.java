@@ -44,11 +44,8 @@ public class EditPostFragment extends Fragment {
 
     int SELECT_PICTURE = 200;
     ImageView IVPreviewImage;
-    Post post;
     String post_id;
-//    public void setPost(Post post) {
-//        this.post = post;
-//    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
