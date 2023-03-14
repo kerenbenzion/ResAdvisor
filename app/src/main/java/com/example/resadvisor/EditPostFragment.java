@@ -10,17 +10,10 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Lifecycle;
 
 import android.util.Log;
-import android.view.Menu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.resadvisor.model.Firestore;
 import com.example.resadvisor.model.Model;
 
 import java.io.BufferedReader;
@@ -36,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.example.resadvisor.model.Post;
 
@@ -49,30 +45,16 @@ public class EditPostFragment extends Fragment {
     int SELECT_PICTURE = 200;
     ImageView IVPreviewImage;
     Post post;
-    public void setPost(Post post) {
-        this.post = post;
-    }
+    String post_id;
+//    public void setPost(Post post) {
+//        this.post = post;
+//    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentActivity parentActivity = getActivity();
-
-        parentActivity.addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menu.removeItem(R.id.editPostFragment);
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-                return false;
-            }
-        },this, Lifecycle.State.RESUMED);
-
+        post_id = getArguments().getString("post_id");
 
     }
-
-
 
     private void updatePost(String post_id,String title,String desc,Integer price,String res_name,
                         String res_address) {
@@ -103,6 +85,7 @@ public class EditPostFragment extends Fragment {
                         Double price_usd = Double.parseDouble(currency_response)*price;
                         String email = Model.instance().getcurrent().getEmail();
                         String picpath = post_id+"_"+title+"_"+email.split("@")[0];
+
                         Post.addPost(post_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
                         Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -134,21 +117,16 @@ public class EditPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        String postId = "dOUSxt5CFt5VzUYmxvoh";
-        Post post = Model.instance().getPost(postId);
 
         View view = inflater.inflate(R.layout.fragment_edit_post, container, false);
 
         EditText et_title = view.findViewById(R.id.editpost_title_et);
-        et_title.setText("lalal");
         EditText et_desc = view.findViewById(R.id.editpost_desc_et);
-        et_desc.setText(post.description);
         EditText et_price = view.findViewById(R.id.editpost_price_et);
-        et_price.setText(post.price);
         EditText et_res_name = view.findViewById(R.id.editpost_res_name_et);
-        et_res_name.setText(post.res_name);
         EditText et_res_address = view.findViewById(R.id.editpost_res_address_et);
-        et_res_address.setText(post.res_address);
+        IVPreviewImage = view.findViewById(R.id.editpost_uploaded_picture);
+        Model.instance().getPost(post_id, et_title, et_desc, et_price, et_res_name, et_res_address, IVPreviewImage);
 
         Button saveBtn = view.findViewById(R.id.editpost_save_btn);
         Button add_image = view.findViewById(R.id.editpost_add_image);
@@ -164,7 +142,7 @@ public class EditPostFragment extends Fragment {
             String res_name = et_res_name.getText().toString();
             String res_address = et_res_address.getText().toString();
 
-            updatePost(postId, title, desc, price,res_name,res_address);
+            updatePost(post_id, title, desc, price,res_name,res_address);
             Toast.makeText(getContext(),
                             "Update post successfully",
                             Toast.LENGTH_LONG)

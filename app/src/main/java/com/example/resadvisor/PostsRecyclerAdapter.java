@@ -1,7 +1,6 @@
 package com.example.resadvisor;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,21 +50,15 @@ class PostViewHolder extends RecyclerView.ViewHolder{
                 priceInNis = !priceInNis;
             }
         });
-//        editPostBtn.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_userPostsListFragment_to_editPostFragment));
-
 
         editPostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            public void onClick(View v) {
                 int pos = (int)price.getTag();
                 Post post = data.get(pos);
-                EditPostFragment editPost = new EditPostFragment();
-                editPost.setPost(post);
+                Bundle bundle = new Bundle();
+                bundle.putString("post_id", post.id);
 
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.postslistrow_editPost_btn, editPost).addToBackStack(null).commit();
-
-//                Navigation.createNavigateOnClickListener(R.id.action_userPostsListFragment_to_editPostFragment);
+                Navigation.findNavController(v).navigate(R.id.action_userPostsListFragment_to_editPostFragment, bundle);
 
             }
         });
