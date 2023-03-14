@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.resadvisor.ProfileFragment"
-        android:label="Add Post"
+        android:label="My Profile"
         tools:layout="@layout/fragment_profile" />
     <action android:id="@+id/action_global_profileFragment" app:destination="@id/profileFragment" />
 
