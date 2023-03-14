@@ -54,7 +54,7 @@ public class UserPostsListFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
-        adapter = new PostsRecyclerAdapter(getLayoutInflater(), data);
+        adapter = new PostsRecyclerAdapter(getLayoutInflater(), data, true);
         String userEmail = Model.instance().getcurrent().getEmail();
 
         Model.instance().getUserPosts((postsList)->{

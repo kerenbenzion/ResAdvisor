@@ -29,7 +29,7 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     ImageView picture;
     Boolean priceInNis;
 
-    public PostViewHolder(@NonNull View itemView, List<Post> data) {
+    public PostViewHolder(@NonNull View itemView, List<Post> data, boolean is_edit_post) {
         super(itemView);
         picture = itemView.findViewById(R.id.postslistrow_img);
         title = itemView.findViewById(R.id.postslistrow_title);
@@ -38,7 +38,9 @@ class PostViewHolder extends RecyclerView.ViewHolder{
         email = itemView.findViewById(R.id.postslistrow_email);
         Button convert = itemView.findViewById(R.id.postslistrow_convert_btn);
         Button editPostBtn = itemView.findViewById(R.id.postslistrow_editPost_btn);
-
+        if (!is_edit_post) {
+            editPostBtn.setVisibility(View.GONE);
+        }
         this.data = data;
         priceInNis = true;
         convert.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +81,7 @@ public class PostsRecyclerAdapter extends  RecyclerView.Adapter<PostViewHolder>{
 
     LayoutInflater inflater;
     List<Post> data;
+    boolean is_edit_post;
 
     public void setData(List<Post> data)
     {
@@ -86,17 +89,18 @@ public class PostsRecyclerAdapter extends  RecyclerView.Adapter<PostViewHolder>{
         notifyDataSetChanged();
     }
 
-    public PostsRecyclerAdapter(LayoutInflater inflater, List<Post> data )
+    public PostsRecyclerAdapter(LayoutInflater inflater, List<Post> data, boolean is_edit_post )
     {
         this.data = data;
         this.inflater = inflater;
+        this.is_edit_post = is_edit_post;
     }
 
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.posts_list_row, parent, false);
-        return new PostViewHolder(view, data);
+        return new PostViewHolder(view, data, is_edit_post);
     }
 
     @Override
