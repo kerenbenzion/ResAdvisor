@@ -44,7 +44,7 @@ public class Model {
     }
 
     List<Post> data = new LinkedList<>();
-
+    AppLocalDbRepository localDb=AppLocalDb.getAppDb();
     public interface GetAllPostsListener{
         void onComplete(List<Post> data);
     }

@@ -5,12 +5,17 @@ import android.view.Display;
 import java.util.HashMap;
 import java.util.Map;
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 
+@Entity
 public class Post {
+    @PrimaryKey
+    @NonNull
     public String id;
     public String title;
     public String description;
@@ -20,6 +25,10 @@ public class Post {
     public String res_address;
     public String email;
     public String pic_path;
+    public Post(){
+
+    }
+
     public Post( String id, String title, String description, String price, String priceUsd,
                 String res_name, String res_address,String email,String pic_path) {
         this.id = id;
@@ -84,5 +93,76 @@ public class Post {
         return post;
     }
 
+    @NonNull
+    public String getId() {
+        return id;
+    }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getPrice_usd() {
+        return price_usd;
+    }
+
+    public String getRes_name() {
+        return res_name;
+    }
+
+    public String getRes_address() {
+        return res_address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPic_path() {
+        return pic_path;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setPrice_usd(String price_usd) {
+        this.price_usd = price_usd;
+    }
+
+    public void setRes_name(String res_name) {
+        this.res_name = res_name;
+    }
+
+    public void setRes_address(String res_address) {
+        this.res_address = res_address;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPic_path(String pic_path) {
+        this.pic_path = pic_path;
+    }
 }
