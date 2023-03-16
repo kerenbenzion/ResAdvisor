@@ -99,8 +99,9 @@ public class Firestore {
     }
 
 
-    public void getUserPosts(Model.GetAllPostsListener callback, String userEmail){
+    public void getUserPostsSince(Long since,String userEmail,Model.GetAllPostsListener callback){
         db.collection("posts")
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED,new Timestamp(since,0))
                 .whereEqualTo(Post.EMAIL, userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
