@@ -54,7 +54,29 @@ public class Model {
 
     public void getAllPosts(GetAllPostsListener callback)
     {
-        firestore.getAllPosts(callback);
+        //get local last update
+        Long localLastUpdate = Post.getLocalLastUpdate();
+        //get all  posts since
+        firestore.getAllPostsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Long time = localLastUpdate;
+                for(Post ps:list){
+                    //insert new records into ROOM
+                    AppLocalDb.getAppDb().postDao().insertAll(ps);
+                    if(time<ps.getLastUpdated()){
+                        time=ps.getLastUpdated();
+                    }
+                }
+                // update local last update
+                Post.setLocalLastUpdate(time);
+                //return complete list from ROOM
+                List<Post> complete = AppLocalDb.getAppDb().postDao().getAll();
+                mainHandler.post(()->{
+                    callback.onComplete(complete);
+                });
+            });
+
+        });
     }
 
     public void getUserPosts(GetAllPostsListener callback, String userEmail)
