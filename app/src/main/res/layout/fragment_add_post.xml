@@ -173,7 +173,7 @@
         android:id="@+id/addpost_uploaded_picture"
         android:layout_width="149dp"
         android:layout_height="60dp"
-        android:src="@drawable/blue_background"
+        android:src="@drawable/no_image_available"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.702"

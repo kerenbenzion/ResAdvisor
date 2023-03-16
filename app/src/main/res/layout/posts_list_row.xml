@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_res" />
+        app:srcCompat="@drawable/no_image_available" />
 
     <TextView
         android:id="@+id/postslistrow_title"

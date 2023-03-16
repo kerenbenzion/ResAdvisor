@@ -18,7 +18,6 @@ import java.io.ByteArrayOutputStream;
 
 public class FirebaseStoreageModel {
     FirebaseStorage storage;
-
     FirebaseStoreageModel() {
         storage = FirebaseStorage.getInstance();
     }
@@ -31,7 +30,10 @@ public class FirebaseStoreageModel {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                img.setImageBitmap(bmp);
+                Bitmap emptyBitmap = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+                if (!bmp.sameAs(emptyBitmap)) {
+                    img.setImageBitmap(bmp);
+                }
             }
         });
     }
