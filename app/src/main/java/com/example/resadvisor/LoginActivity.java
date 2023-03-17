@@ -1,5 +1,4 @@
 package com.example.resadvisor;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -13,17 +12,15 @@ import android.widget.Button;
 
 import com.example.resadvisor.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.AuthResult;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailTextView, passwordTextView;
     private Button Btn;
     private TextView registerRedirect;
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -74,13 +71,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-    public  void oncomplete(){
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
 
-    private void loginUserAccount()
-    {
+    private void loginUserAccount() {
         String email, password;
         email = emailTextView.getText().toString();
         password = passwordTextView.getText().toString();
@@ -101,39 +93,44 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
             return;
         }
-//        if (Model.instance().signin(email,password)){
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//            startActivity(intent);
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Login failed!", Toast.LENGTH_LONG).show();
-//        }
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(
-                                    @NonNull Task<AuthResult> task)
-                            {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(),
-                                                    "Login successful!",
-                                                    Toast.LENGTH_LONG)
-                                            .show();
 
-                                    // if successful - go to main activity
-                                    Intent intent
-                                            = new Intent(LoginActivity.this,
-                                            MainActivity.class);
-                                    startActivity(intent);
-                                }
-                                else {
-                                    // sign-in failed
-                                    Toast.makeText(getApplicationContext(),
-                                                    "Login failed!",
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-                                }
-                            }
-                        });
+        Model.instance().signIn(email,password,(ok)->{
+            if(ok){
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Login failed!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+//        Toast.makeText(getApplicationContext(), "IsLoggedIn: "+managed_to_login, Toast.LENGTH_LONG).show();
+
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(
+//                        new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(
+//                                    @NonNull Task<AuthResult> task)
+//                            {
+//                                if (task.isSuccessful()) {
+//                                    Toast.makeText(getApplicationContext(),
+//                                                    "Login successful!",
+//                                                    Toast.LENGTH_LONG)
+//                                            .show();
+//
+//                                    // if successful - go to main activity
+//                                    Intent intent
+//                                            = new Intent(LoginActivity.this,
+//                                            MainActivity.class);
+//                                    startActivity(intent);
+//                                }
+//                                else {
+//                                    // sign-in failed
+
+//                                }
+//                            }
+//                        });
     }
 }

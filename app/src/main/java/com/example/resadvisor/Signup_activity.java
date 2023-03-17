@@ -126,50 +126,60 @@ public class Signup_activity extends AppCompatActivity {
 
     }
     private void createAccount(String email, String password,String firstname,String lastname) {
+        Model.instance().register(email,password,firstname,lastname,IVPreviewImage,(ok)->{
+            if(ok){
+                Intent intent = new Intent(Signup_activity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Register failed!", Toast.LENGTH_LONG).show();
+            }
+        });
+
         // [START create_user_with_email]
 //        Model.instance().register(email,password,IVPreviewImage,firstname);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "createUserWithEmail:success");
-                            Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                            byte[] data = baos.toByteArray();
-                            Model.instance().uploadImage(Model.instance().getcurrent().getUid()+"_",data,url->Log.d("TAG","Start to upload"));
-
-                            FirebaseUser user =Model.instance().getcurrent();
-                            UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(firstname).build();
-                            user.updateProfile(profileupdate).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        String displayName =Model.instance().getcurrent().getDisplayName();
-                                        Log.d("TAG","User profile updated");
-                                        Log.d("TAG","Display name: "+ displayName);
-                                        Intent intent
-                                                = new Intent(Signup_activity.this,
-                                                LoginActivity.class);
-                                        startActivity(intent);
-
-                                    } else {
-                                        Log.d("TAG","User profile was not updated");
-                                    }
-                                }
-                            });
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(Signup_activity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//        mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d("TAG", "createUserWithEmail:success");
+//                            Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();
+//                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                            bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                            byte[] data = baos.toByteArray();
+//                            Model.instance().uploadImage(Model.instance().getcurrent().getUid()+"_",data,url->Log.d("TAG","Start to upload"));
+//
+//                            FirebaseUser user =Model.instance().getcurrent();
+//                            UserProfileChangeRequest profileupdate = new UserProfileChangeRequest.Builder().setDisplayName(firstname).build();
+//                            user.updateProfile(profileupdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if(task.isSuccessful()){
+//                                        String displayName =Model.instance().getcurrent().getDisplayName();
+//                                        Log.d("TAG","User profile updated");
+//                                        Log.d("TAG","Display name: "+ displayName);
+//                                        Intent intent
+//                                                = new Intent(Signup_activity.this,
+//                                                LoginActivity.class);
+//                                        startActivity(intent);
+//
+//                                    } else {
+//                                        Log.d("TAG","User profile was not updated");
+//                                    }
+//                                }
+//                            });
+//
+//
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
+//                            Toast.makeText(Signup_activity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
         // [END create_user_with_email]
     }
     private void reload() { }

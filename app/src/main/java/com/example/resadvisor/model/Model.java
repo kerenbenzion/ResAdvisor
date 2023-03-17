@@ -5,6 +5,7 @@ import java.util.List;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -51,7 +52,6 @@ public class Model {
     public interface GetAllResturantsListener{
         void onComplete(List<Resturant> data);
     }
-
     public void getAllPosts(GetAllPostsListener callback)
     {
         //get local last update
@@ -132,11 +132,14 @@ public class Model {
     public void getBitMap(String path, ImageView img) {
         firebaseModel.getImage(path,img);
     }
-    public void register(String email, String password, ImageView IVPreviewImage,String firstname){
-        authModel.register(email,password,IVPreviewImage,firstname);
+    public interface SignInListener{
+        void onComplete(boolean data);
     }
-    public void signin(String email,String password){
-        authModel.signin(email,password);
+    public void signIn(String email, String password,SignInListener callback){
+        authModel.signIn(email,password,callback);
+    }
+    public void register(String email, String password,String firstname,String lastname,ImageView IVPreviewImage, SignInListener callback){
+        authModel.register(email,password,firstname,lastname,IVPreviewImage,callback);
     }
 
 }
