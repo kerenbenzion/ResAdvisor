@@ -74,6 +74,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+    public  void oncomplete(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     private void loginUserAccount()
     {
@@ -97,7 +101,12 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
             return;
         }
-
+//        if (Model.instance().signin(email,password)){
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            startActivity(intent);
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Login failed!", Toast.LENGTH_LONG).show();
+//        }
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
                         new OnCompleteListener<AuthResult>() {

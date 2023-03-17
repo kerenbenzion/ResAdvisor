@@ -179,7 +179,7 @@ public class AddPostFragment extends Fragment {
             String res_address = res_addressEt.getText().toString();
             DocumentReference ref_resturant = Firestore.instance().getDb().collection("resturants").document();
 
-            DocumentReference ref = Firestore.instance().getDb().collection("published_posts").document();
+            DocumentReference ref = Firestore.instance().getDb().collection("posts").document();
             String collection_id = ref.getId();
             String resturant_id = ref_resturant.getId();
             getUSD(collection_id, title, desc, price,res_name,res_address,resturant_id);

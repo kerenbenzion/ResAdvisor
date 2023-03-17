@@ -1,16 +1,26 @@
 package com.example.resadvisor.model;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Display;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import com.example.resadvisor.MyApplication;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FieldValue;
 
+@Entity
 public class Post {
+    @PrimaryKey
+    @NonNull
     public String id;
     public String title;
     public String description;
@@ -20,6 +30,16 @@ public class Post {
     public String res_address;
     public String email;
     public String pic_path;
+
+    public void setLastUpdated(Long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public Long lastUpdated;
+    public Post(){
+
+    }
+
     public Post( String id, String title, String description, String price, String priceUsd,
                 String res_name, String res_address,String email,String pic_path) {
         this.id = id;
@@ -45,7 +65,8 @@ public class Post {
         data.put("res_address",res_address);
         data.put("price_usd",price_usd);
         data.put("pic_path",picpath);
-        Firestore.instance().getDb().collection("published_posts").document(id).set(data)
+        data.put("lastUpdated", FieldValue.serverTimestamp());
+        Firestore.instance().getDb().collection("posts").document(id).set(data)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -69,6 +90,9 @@ public class Post {
     static final String RESADDRESS = "res_address";
     static final String EMAIL = "email";
     static final String PICTURE = "pic_path";
+    static final String LAST_UPDATED = "lastUpdated";
+    static final String LOCAL_LAST_UPDATED = "posts_local_last_update";
+
     public static Post fromJson(Map<String,Object> json){
         String id = (String)json.get(ID);
         String title = (String)json.get(TITLE);
@@ -79,10 +103,100 @@ public class Post {
         String res_address = (String) json.get(RESADDRESS);
         String email = (String)json.get(EMAIL);
         String pic_path = (String)json.get(PICTURE);
+        Timestamp time = (Timestamp) json.get(LAST_UPDATED);
         Post post = new Post(id, title, description, price, priceUsd, res_name, res_address ,email,pic_path);
+        post.setLastUpdated(time.getSeconds());
 
         return post;
     }
 
+    public static Long getLocalLastUpdate() {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        return sharedPref.getLong(LOCAL_LAST_UPDATED, 0);
+    }
+
+    public static void setLocalLastUpdate(Long time) {
+        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(LOCAL_LAST_UPDATED,time);
+        editor.commit();
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getPrice_usd() {
+        return price_usd;
+    }
+
+    public String getRes_name() {
+        return res_name;
+    }
+
+    public String getRes_address() {
+        return res_address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPic_path() {
+        return pic_path;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setPrice_usd(String price_usd) {
+        this.price_usd = price_usd;
+    }
+
+    public void setRes_name(String res_name) {
+        this.res_name = res_name;
+    }
+
+    public void setRes_address(String res_address) {
+        this.res_address = res_address;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPic_path(String pic_path) {
+        this.pic_path = pic_path;
+    }
+
+    public Long getLastUpdated() {
+        return lastUpdated;
+    }
 
 }

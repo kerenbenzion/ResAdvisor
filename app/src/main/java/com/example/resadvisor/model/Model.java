@@ -44,7 +44,7 @@ public class Model {
     }
 
     List<Post> data = new LinkedList<>();
-
+    AppLocalDbRepository localDb=AppLocalDb.getAppDb();
     public interface GetAllPostsListener{
         void onComplete(List<Post> data);
     }
@@ -54,12 +54,54 @@ public class Model {
 
     public void getAllPosts(GetAllPostsListener callback)
     {
-        firestore.getAllPosts(callback);
+        //get local last update
+        Long localLastUpdate = Post.getLocalLastUpdate();
+        //get all  posts since
+        firestore.getAllPostsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Long time = localLastUpdate;
+                for(Post ps:list){
+                    //insert new records into ROOM
+                    AppLocalDb.getAppDb().postDao().insertAll(ps);
+                    if(time<ps.getLastUpdated()){
+                        time=ps.getLastUpdated();
+                    }
+                }
+                // update local last update
+                Post.setLocalLastUpdate(time);
+                //return complete list from ROOM
+                List<Post> complete = AppLocalDb.getAppDb().postDao().getAll();
+                mainHandler.post(()->{
+                    callback.onComplete(complete);
+                });
+            });
+
+        });
     }
 
     public void getUserPosts(GetAllPostsListener callback, String userEmail)
     {
-        firestore.getUserPosts(callback, userEmail);
+        Long localLastUpdate = Post.getLocalLastUpdate();
+        firestore.getUserPostsSince(localLastUpdate, userEmail,list->{
+            executor.execute(()->{
+                Long time = localLastUpdate;
+                for(Post ps:list){
+                    //insert new records into ROOM
+                    AppLocalDb.getAppDb().postDao().insertAll(ps);
+                    if(time<ps.getLastUpdated()){
+                        time=ps.getLastUpdated();
+                    }
+                }
+                Post.setLocalLastUpdate(time);
+                //return complete list from ROOM
+                List<Post> complete = AppLocalDb.getAppDb().postDao().getUsersPosts(userEmail);
+                mainHandler.post(()->{
+                    callback.onComplete(complete);
+                });
+
+            });
+
+        });
     }
 
     public void getPost (String postId, EditText et_title, EditText et_desc, EditText et_price,
@@ -89,6 +131,12 @@ public class Model {
 
     public void getBitMap(String path, ImageView img) {
         firebaseModel.getImage(path,img);
+    }
+    public void register(String email, String password, ImageView IVPreviewImage,String firstname){
+        authModel.register(email,password,IVPreviewImage,firstname);
+    }
+    public void signin(String email,String password){
+        authModel.signin(email,password);
     }
 
 }

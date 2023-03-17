@@ -59,8 +59,9 @@ public class Firestore {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getAllPosts(Model.GetAllPostsListener callback){
-        db.collection("published_posts")
+    public void getAllPostsSince(Long since,Model.GetAllPostsListener callback){
+        db.collection("posts")
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED,new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -98,8 +99,9 @@ public class Firestore {
     }
 
 
-    public void getUserPosts(Model.GetAllPostsListener callback, String userEmail){
-        db.collection("published_posts")
+    public void getUserPostsSince(Long since,String userEmail,Model.GetAllPostsListener callback){
+        db.collection("posts")
+                .whereGreaterThanOrEqualTo(Post.LAST_UPDATED,new Timestamp(since,0))
                 .whereEqualTo(Post.EMAIL, userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -120,7 +122,7 @@ public class Firestore {
 
     public void getPost(String postId, EditText et_title, EditText et_desc, EditText et_price,
                         EditText et_res_name, EditText et_res_address, ImageView imgView){
-        DocumentReference docRef = db.collection("published_posts").document(postId);
+        DocumentReference docRef = db.collection("posts").document(postId);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -148,5 +150,6 @@ public class Firestore {
         });
 
     }
+
 
 }

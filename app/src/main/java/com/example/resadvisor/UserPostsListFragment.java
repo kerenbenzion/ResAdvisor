@@ -1,5 +1,6 @@
 package com.example.resadvisor;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +29,9 @@ import java.util.List;
 
 public class UserPostsListFragment extends Fragment {
 
-    List<Post> data = new LinkedList<>();
+//    List<Post> data = new LinkedList<>();
     PostsRecyclerAdapter adapter;
-
+    UserPostsListFragmentViewModel viewModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +56,12 @@ public class UserPostsListFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
-        adapter = new PostsRecyclerAdapter(getLayoutInflater(), data, true);
+        adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData(), true);
         String userEmail = Model.instance().getcurrent().getEmail();
 
         Model.instance().getUserPosts((postsList)->{
-            data = postsList;
-            adapter.setData(data);
+            viewModel.setData(postsList);
+            adapter.setData(viewModel.getData());
         }, userEmail);
 
         RecyclerView list = view.findViewById(R.id.postslistfrag_list);
@@ -69,5 +71,11 @@ public class UserPostsListFragment extends Fragment {
         list.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(UserPostsListFragmentViewModel.class);
     }
 }
