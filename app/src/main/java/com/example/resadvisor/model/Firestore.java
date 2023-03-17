@@ -79,8 +79,9 @@ public class Firestore {
                 });
     }
 
-    public void getAllResturants(Model.GetAllResturantsListener callback){
+    public void getAllResturantsSince(Long since,Model.GetAllResturantsListener callback){
         db.collection("resturants")
+                .whereGreaterThanOrEqualTo(Resturant.LAST_UPDATED,new Timestamp(since,0))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

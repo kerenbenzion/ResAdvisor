@@ -117,7 +117,7 @@ public class AddPostFragment extends Fragment {
                                 Double lat =addressList.get(0).getLatitude();
                                 Double lng =addressList.get(0).getLongitude();
                                 GeoPoint geoPoint = new GeoPoint(lat,lng);
-                                Resturant.addResturant(res_name,res_address,resturant_id,geoPoint);
+                                Resturant.addResturant(res_name,res_address,resturant_id,geoPoint.getLongitude(),geoPoint.getLatitude());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

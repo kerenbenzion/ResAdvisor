@@ -111,7 +111,26 @@ public class Model {
 
     public void getAllResturants(GetAllResturantsListener callback)
     {
-        firestore.getAllResturants(callback);
+        Long localLastUpdate = Resturant.getLocalLastUpdate();
+        firestore.getAllResturantsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Long time = localLastUpdate;
+                for(Resturant resturant:list){
+                    //insert new records into ROOM
+                    AppLocalDb.getAppDb().resturantDao().insertAll(resturant);
+                    if(time<resturant.getLastUpdated()){
+                        time=resturant.getLastUpdated();
+                    }
+                }
+                // update local last update
+                Resturant.setLocalLastUpdate(time);
+                //return complete list from ROOM
+                List<Resturant> complete = AppLocalDb.getAppDb().resturantDao().getAll();
+                mainHandler.post(()->{
+                    callback.onComplete(complete);
+                });
+            });
+        });
     }
 
     public void addPost(Post post)
