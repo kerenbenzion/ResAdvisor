@@ -16,7 +16,7 @@
             android:id="@+id/postslistfrag_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/blue_background"
+            android:background="@drawable/green_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
