@@ -132,5 +132,11 @@ public class Model {
     public void getBitMap(String path, ImageView img) {
         firebaseModel.getImage(path,img);
     }
+    public void register(String email, String password, ImageView IVPreviewImage,String firstname){
+        authModel.register(email,password,IVPreviewImage,firstname);
+    }
+    public void signin(String email,String password){
+        authModel.signin(email,password);
+    }
 
 }

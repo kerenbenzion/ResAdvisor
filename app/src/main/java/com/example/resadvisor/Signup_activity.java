@@ -127,6 +127,7 @@ public class Signup_activity extends AppCompatActivity {
     }
     private void createAccount(String email, String password,String firstname,String lastname) {
         // [START create_user_with_email]
+//        Model.instance().register(email,password,IVPreviewImage,firstname);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
