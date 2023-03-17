@@ -7,9 +7,10 @@ import androidx.room.RoomDatabase;
 
 import com.example.resadvisor.MyApplication;
 
-@Database(entities = {Post.class}, version = 1)
+@Database(entities = {Post.class,Resturant.class}, version = 2)
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract PostDao postDao();
+    public abstract ResturantDao resturantDao();
 }
 
 public class AppLocalDb {

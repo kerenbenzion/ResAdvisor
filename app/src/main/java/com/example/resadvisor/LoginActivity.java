@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Button;
 
 import com.example.resadvisor.model.Model;
+import com.example.resadvisor.model.Post;
+import com.example.resadvisor.model.Resturant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -35,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                     MainActivity.class);
             startActivity(intent);
         }
+        Post.setLocalLastUpdate(new Long(0));
+        Resturant.setLocalLastUpdate(new Long(0));
 
     }
 

@@ -79,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
                 for (Resturant resturant:data) {
                     String name = resturant.name;
-                    LatLng latLng = new LatLng(resturant.geo.getLatitude(),resturant.geo.getLongitude());
+                    LatLng latLng = new LatLng(resturant.lat,resturant.lng);
                     MarkerOptions markerOptions  = new MarkerOptions();
                     markerOptions.title(name);
                     markerOptions.position(latLng);
