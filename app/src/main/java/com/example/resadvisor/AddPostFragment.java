@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Menu;
@@ -168,6 +169,9 @@ public class AddPostFragment extends Fragment {
         Button add_image = view.findViewById(R.id.addpost_add_image);
         //When clicked - move to list page
         Button cancelBtn = view.findViewById(R.id.addpost_cancell_btn);
+        cancelBtn.setOnClickListener(view1->{
+            Navigation.findNavController(view1).popBackStack();
+        });
         add_image.setOnClickListener(view1->{
             image_chooser();
         });
