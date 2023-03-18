@@ -75,7 +75,7 @@ public class ProfileFragment extends Fragment {
         Log.d(TAG, email);
         Log.d(TAG, "Password");
         Log.d(TAG, password);
-        AuthCredential credential = EmailAuthProvider.getCredential(email, newPass);
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
