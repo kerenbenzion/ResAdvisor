@@ -111,17 +111,17 @@ public class AddPostFragment extends Fragment {
                         String picpath = collection_id+"_"+title+"_"+email.split("@")[0];
 
                         List<Address> addressList;
-                        try {
-                            addressList = geocoder.getFromLocationName(res_address,1);
-                            if(addressList != null){
-                                Double lat =addressList.get(0).getLatitude();
-                                Double lng =addressList.get(0).getLongitude();
-                                GeoPoint geoPoint = new GeoPoint(lat,lng);
-                                Resturant.addResturant(res_name,res_address,resturant_id,geoPoint.getLongitude(),geoPoint.getLatitude());
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            addressList = geocoder.getFromLocationName(res_address,1);
+//                            if(addressList != null){
+//                                Double lat =addressList.get(0).getLatitude();
+//                                Double lng =addressList.get(0).getLongitude();
+//                                GeoPoint geoPoint = new GeoPoint(lat,lng);
+//                                Resturant.addResturant(res_name,res_address,resturant_id,geoPoint.getLongitude(),geoPoint.getLatitude());
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
 
                         Post.addPost(collection_id, title, desc, price, res_name,res_address, price_usd,email,picpath);
                         Bitmap bmap = ((BitmapDrawable) IVPreviewImage.getDrawable()).getBitmap();

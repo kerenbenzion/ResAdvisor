@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -52,7 +53,17 @@ public class Model {
     public interface GetAllResturantsListener{
         void onComplete(List<Resturant> data);
     }
-    public void getAllPosts(GetAllPostsListener callback)
+
+    private LiveData<List<Post>> postsList;
+    public LiveData<List<Post>> getAllPosts(){
+        if(postsList ==null){
+            postsList = localDb.postDao().getAll();
+        }
+        return postsList;
+
+    }
+
+    public void refreshAllPosts()
     {
         //get local last update
         Long localLastUpdate = Post.getLocalLastUpdate();
@@ -69,11 +80,6 @@ public class Model {
                 }
                 // update local last update
                 Post.setLocalLastUpdate(time);
-                //return complete list from ROOM
-                List<Post> complete = AppLocalDb.getAppDb().postDao().getAll();
-                mainHandler.post(()->{
-                    callback.onComplete(complete);
-                });
             });
 
         });

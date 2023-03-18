@@ -55,13 +55,10 @@ public class PostsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
+        reloadData();
         View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
-        adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData(), false);
+        adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue(), false);
 
-        Model.instance().getAllPosts((postsList)->{
-            viewModel.setData(postsList);
-            adapter.setData(viewModel.getData());
-        });
 
         RecyclerView list = view.findViewById(R.id.postslistfrag_list);
         list.setHasFixedSize(true);
@@ -69,8 +66,22 @@ public class PostsListFragment extends Fragment {
         list.setLayoutManager(new LinearLayoutManager(getContext()));
         list.setAdapter(adapter);
 
+        viewModel.getData().observe(getViewLifecycleOwner(),(list1)->{
+            adapter.setData(list1);
+        });
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reloadData();
+    }
+
+    private void reloadData() {
+        Model.instance().refreshAllPosts();
+    }
+
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         viewModel = new ViewModelProvider(this).get(PostsListFragmentViewModel.class);
