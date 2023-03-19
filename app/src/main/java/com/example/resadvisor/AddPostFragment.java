@@ -2,6 +2,8 @@ package com.example.resadvisor;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,6 +39,8 @@ import com.example.resadvisor.model.Firestore;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -82,9 +86,6 @@ public class AddPostFragment extends Fragment {
 
     private void getUSD(String collection_id,String title,String desc,Integer price,String res_name,
                         String res_address,String resturant_id) {
-        Thread usdThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
 
                 try {
                     String queryString = "https://exchange-rates.abstractapi.com/v1/live/?api_key=5e145483e8a94350baefc81285bec5a2&base=ILS&target=USD";
@@ -129,7 +130,7 @@ public class AddPostFragment extends Fragment {
                         bmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                         byte[] data = baos.toByteArray();
                         Model.instance().uploadImage(picpath,data,url->Log.d("TAG","Start to upload"));
-
+                        saveToInternalStorage(bmap);
 
                     } catch (IOException e) {
                         System.out.println(e);
@@ -142,13 +143,32 @@ public class AddPostFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        });
 
-        usdThread.start();
     }
 
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(MyApplication.getMyContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"profile.jpg");
 
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

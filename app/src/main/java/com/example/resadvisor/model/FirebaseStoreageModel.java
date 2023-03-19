@@ -36,6 +36,15 @@ public class FirebaseStoreageModel {
                 }
             }
         });
+
+
+        //ContextWrapper cw = new ContextWrapper(MyApplication.getMyContext());
+        //File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        //File file = new File(directory, "mario" + ".png");
+        //img.setImageDrawable(Drawable.createFromPath(file.toString()));
+
+
+
     }
     void uploadImage(String name, byte[] data, Model.Listener<String> listener) {
         StorageReference storageRef = storage.getReference();
