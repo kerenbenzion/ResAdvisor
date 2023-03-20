@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerOptions.title(name);
                     markerOptions.position(latLng);
                     mMap.addMarker(markerOptions);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 }
 //                StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
 //                stringBuilder.append("location="+lat+","+lng);
