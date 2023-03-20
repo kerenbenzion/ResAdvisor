@@ -32,11 +32,14 @@ import android.widget.Toast;
 
 import com.example.resadvisor.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -155,7 +158,15 @@ public class ProfileFragment extends Fragment {
         });
 
         IVPreviewImage = rootView.findViewById(R.id.IVProfilePreviewImage);
-        Model.instance().getBitMap(Model.instance().getcurrent().getUid()+"_",IVPreviewImage);
+        FirebaseStorage.getInstance().getReference().child("images/").child(Model.instance().getcurrent().getUid()+"_"+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(IVPreviewImage);
+            }
+        });
+
+
+//        Model.instance().getBitMap(Model.instance().getcurrent().getUid()+"_",IVPreviewImage);
 
 
         Button add_image = rootView.findViewById(R.id.profile_add_image_btn);

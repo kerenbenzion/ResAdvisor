@@ -1,6 +1,7 @@
 package com.example.resadvisor;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.resadvisor.model.FirebaseStoreageModel;
+import com.example.resadvisor.model.Firestore;
 import com.example.resadvisor.model.Model;
 import com.example.resadvisor.model.Post;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -67,13 +74,19 @@ class PostViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bind(Post post, int pos) {
-        Model.instance().getBitMap(post.pic_path,picture);
+//        Model.instance().getBitMap(post.pic_path,picture);
 //        picture.setImageBitmap(b);
         email.setText(post.email);
         title.setText(post.title);
         description.setText(post.description);
         price.setText(post.price + " NIS");
         price.setTag(pos);
+        FirebaseStorage.getInstance().getReference().child("images/").child(post.pic_path+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(picture);
+            }
+        });
     }
 }
 
