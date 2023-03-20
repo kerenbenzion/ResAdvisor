@@ -191,8 +191,11 @@ public class AddPostFragment extends Fragment {
                             "Upload post successfully",
                             Toast.LENGTH_LONG)
                     .show();
-
+            Navigation.findNavController(view1).popBackStack(R.id.postsListFragment,false);
         });
+
+        cancelBtn.setOnClickListener(view1 -> Navigation.findNavController(view1).popBackStack(R.id.postsListFragment,false));
+
         return view;
 
     }
