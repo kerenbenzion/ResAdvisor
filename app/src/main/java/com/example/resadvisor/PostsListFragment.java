@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.resadvisor.databinding.FragmentPostsListBinding;
 import com.example.resadvisor.model.Model;
 import com.example.resadvisor.model.Post;
 
@@ -32,6 +33,8 @@ public class PostsListFragment extends Fragment {
 //    List<Post> data = new LinkedList<>();
     PostsRecyclerAdapter adapter;
     PostsListFragmentViewModel viewModel;
+    FragmentPostsListBinding binding;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,20 +58,20 @@ public class PostsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        reloadData();
-        View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
+        binding = FragmentPostsListBinding.inflate(inflater, container, false);
+
+        View view  = binding.getRoot();
         adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue(), false);
 
+        binding.postslistfragList.setHasFixedSize(true);
 
-        RecyclerView list = view.findViewById(R.id.postslistfrag_list);
-        list.setHasFixedSize(true);
-
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
-        list.setAdapter(adapter);
+        binding.postslistfragList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.postslistfragList.setAdapter(adapter);
 
         viewModel.getData().observe(getViewLifecycleOwner(),(list1)->{
             adapter.setData(list1);
         });
+
         return view;
     }
 
@@ -79,7 +82,10 @@ public class PostsListFragment extends Fragment {
     }
 
     private void reloadData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshAllPosts();
+        binding.progressBar.setVisibility(View.GONE);
+
     }
 
     public void onAttach(@NonNull Context context) {

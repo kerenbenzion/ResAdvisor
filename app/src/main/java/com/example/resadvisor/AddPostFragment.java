@@ -60,6 +60,7 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FragmentActivity parentActivity = getActivity();
         geocoder = new Geocoder(this.getContext());
         parentActivity.addMenuProvider(new MenuProvider() {

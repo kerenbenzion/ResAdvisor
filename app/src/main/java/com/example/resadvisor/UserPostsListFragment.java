@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.resadvisor.databinding.FragmentPostsListBinding;
 import com.example.resadvisor.model.Model;
 import com.example.resadvisor.model.Post;
 
@@ -32,6 +33,8 @@ public class UserPostsListFragment extends Fragment {
 //    List<Post> data = new LinkedList<>();
     PostsRecyclerAdapter adapter;
     UserPostsListFragmentViewModel viewModel;
+    FragmentPostsListBinding binding;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +58,14 @@ public class UserPostsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_posts_list, container, false);
-        adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData(), true);
+        binding = FragmentPostsListBinding.inflate(inflater, container, false);
+        View view  = binding.getRoot();
+        adapter = new PostsRecyclerAdapter(getLayoutInflater(), viewModel.getData().getValue(), true);
         String userEmail = Model.instance().getcurrent().getEmail();
 
-        Model.instance().getUserPosts((postsList)->{
-            viewModel.setData(postsList);
-            adapter.setData(viewModel.getData());
-        }, userEmail);
+        viewModel.getData().observe(getViewLifecycleOwner(), (list1)->{
+            adapter.setData(list1);
+        });
 
         RecyclerView list = view.findViewById(R.id.postslistfrag_list);
         list.setHasFixedSize(true);
@@ -78,4 +81,17 @@ public class UserPostsListFragment extends Fragment {
         super.onAttach(context);
         viewModel = new ViewModelProvider(this).get(UserPostsListFragmentViewModel.class);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reloadData();
+    }
+    private void reloadData() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        Model.instance().refreshAllUserPosts(Model.instance().getcurrent().getEmail());
+        binding.progressBar.setVisibility(View.GONE);
+
+    }
+
 }
