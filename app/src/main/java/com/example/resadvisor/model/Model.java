@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -52,7 +53,16 @@ public class Model {
     public interface GetAllResturantsListener{
         void onComplete(List<Resturant> data);
     }
-    public void getAllPosts(GetAllPostsListener callback)
+
+    private LiveData<List<Post>> postsList;
+    public LiveData<List<Post>> getAllPosts(){
+        if(postsList ==null){
+            postsList = localDb.postDao().getAll();
+        }
+        return postsList;
+
+    }
+    public void refreshAllPosts()
     {
         //get local last update
         Long localLastUpdate = Post.getLocalLastUpdate();
@@ -62,43 +72,44 @@ public class Model {
                 Long time = localLastUpdate;
                 for(Post ps:list){
                     //insert new records into ROOM
-                    AppLocalDb.getAppDb().postDao().insertAll(ps);
+                    localDb.postDao().insertAll(ps);
                     if(time<ps.getLastUpdated()){
                         time=ps.getLastUpdated();
                     }
                 }
                 // update local last update
                 Post.setLocalLastUpdate(time);
-                //return complete list from ROOM
-                List<Post> complete = AppLocalDb.getAppDb().postDao().getAll();
-                mainHandler.post(()->{
-                    callback.onComplete(complete);
-                });
             });
 
         });
     }
 
-    public void getUserPosts(GetAllPostsListener callback, String userEmail)
+
+    private LiveData<List<Post>> userList;
+    public LiveData<List<Post>> getUserPosts(String email){
+        if(userList ==null){
+            userList = localDb.postDao().getUsersPosts(email);
+        }
+        return userList;
+
+    }
+    public void refreshAllUserPosts(String email)
     {
+        //get local last update
         Long localLastUpdate = Post.getLocalLastUpdate();
-        firestore.getUserPostsSince(localLastUpdate, userEmail,list->{
+        //get all  posts since
+        firestore.getUserPostsSince(localLastUpdate, email, list->{
             executor.execute(()->{
                 Long time = localLastUpdate;
                 for(Post ps:list){
                     //insert new records into ROOM
-                    AppLocalDb.getAppDb().postDao().insertAll(ps);
+                    localDb.postDao().insertAll(ps);
                     if(time<ps.getLastUpdated()){
                         time=ps.getLastUpdated();
                     }
                 }
+                // update local last update
                 Post.setLocalLastUpdate(time);
-                //return complete list from ROOM
-                List<Post> complete = AppLocalDb.getAppDb().postDao().getUsersPosts(userEmail);
-                mainHandler.post(()->{
-                    callback.onComplete(complete);
-                });
-
             });
 
         });
@@ -117,7 +128,7 @@ public class Model {
                 Long time = localLastUpdate;
                 for(Resturant resturant:list){
                     //insert new records into ROOM
-                    AppLocalDb.getAppDb().resturantDao().insertAll(resturant);
+                    localDb.resturantDao().insertAll(resturant);
                     if(time<resturant.getLastUpdated()){
                         time=resturant.getLastUpdated();
                     }
@@ -125,7 +136,7 @@ public class Model {
                 // update local last update
                 Resturant.setLocalLastUpdate(time);
                 //return complete list from ROOM
-                List<Resturant> complete = AppLocalDb.getAppDb().resturantDao().getAll();
+                List<Resturant> complete = localDb.resturantDao().getAll();
                 mainHandler.post(()->{
                     callback.onComplete(complete);
                 });

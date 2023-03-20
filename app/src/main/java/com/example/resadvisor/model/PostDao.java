@@ -1,5 +1,6 @@
 package com.example.resadvisor.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -10,10 +11,10 @@ import java.util.List;
 @Dao
 public interface PostDao {
     @Query("select * from Post")
-    List<Post> getAll();
+    LiveData<List<Post>> getAll();
 
     @Query("select * from Post where email=:emails")
-    List<Post> getUsersPosts(String emails);
+    LiveData<List<Post>> getUsersPosts(String emails);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Post ... posts);
 

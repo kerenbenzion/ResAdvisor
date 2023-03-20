@@ -98,12 +98,12 @@ public class Post {
         String title = (String)json.get(TITLE);
         String description = (String)json.get(DESCRIPTION);
         String price = String.valueOf(json.get(PRICE));
-        String priceUsd = String.format("%.2f", json.get(PRICEUSD));
         String res_name = (String) json.get(RESNAME);
         String res_address = (String) json.get(RESADDRESS);
         String email = (String)json.get(EMAIL);
         String pic_path = (String)json.get(PICTURE);
         Timestamp time = (Timestamp) json.get(LAST_UPDATED);
+        String priceUsd = String.format("%.2f", json.get(PRICEUSD));
         Post post = new Post(id, title, description, price, priceUsd, res_name, res_address ,email,pic_path);
         post.setLastUpdated(time.getSeconds());
 
@@ -116,10 +116,7 @@ public class Post {
     }
 
     public static void setLocalLastUpdate(Long time) {
-        SharedPreferences sharedPref = MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(LOCAL_LAST_UPDATED,time);
-        editor.commit();
+        MyApplication.getMyContext().getSharedPreferences("TAG", Context.MODE_PRIVATE).edit().putLong(LOCAL_LAST_UPDATED,time).commit();
     }
 
     @NonNull
