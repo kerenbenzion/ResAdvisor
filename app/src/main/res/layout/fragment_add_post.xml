@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:paddingBottom="100dp">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,6 +7,70 @@
     android:background="@drawable/green_back"
     android:backgroundTintMode="add"
     tools:context=".AddPostFragment">
+
+    <Button
+        android:id="@+id/addpost_add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="11dp"
+        android:backgroundTint="#009688"
+        android:text="Add Image"
+        app:iconTint="#B81010"
+        app:layout_constraintBottom_toTopOf="@+id/addpost_cancell_btn"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_res_address_et"
+        app:layout_constraintVertical_bias="0.126"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/addpost_uploaded_picture"
+        android:layout_width="89dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/no_image_available"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.774"
+        app:layout_constraintStart_toEndOf="@+id/addpost_add_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.781" />
+
+    <EditText
+        android:id="@+id/addpost_res_address_et"
+        android:layout_width="400dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/addpost_uploaded_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_res_address"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <TextView
+        android:id="@+id/addpost_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Total Price:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_desc_et" />
+
+    <EditText
+        android:id="@+id/addpost_desc_et"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_desc" />
 
     <EditText
         android:id="@+id/addpost_title_et"
@@ -31,71 +87,10 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/addpost_price_et"
-        android:layout_width="408dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#DE57A196"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_price" />
-
-    <Button
-        android:id="@+id/addpost_add_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginBottom="11dp"
-        android:backgroundTint="#009688"
-        android:text="Add Image"
-        app:iconTint="#B81010"
-        app:layout_constraintBottom_toTopOf="@+id/addpost_cancell_btn"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_res_address_et"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="13dp" />
-
-    <EditText
-        android:id="@+id/addpost_res_address_et"
-        android:layout_width="400dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_res_address" />
-
-    <TextView
-        android:id="@+id/addpost_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
-        android:text="Post title:"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/addposr_res_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:text="Restuarant Name:"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_price_et" />
-
-    <EditText
         android:id="@+id/addpost_res_name_et"
         android:layout_width="400dp"
         android:layout_height="45dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,49 +99,74 @@
         app:layout_constraintTop_toBottomOf="@+id/addposr_res_name" />
 
     <TextView
+        android:id="@+id/addpost_res_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Address:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_res_name_et" />
+
+    <TextView
         android:id="@+id/addpost_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="Description:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addpost_title_et" />
 
-    <EditText
-        android:id="@+id/addpost_desc_et"
-        android:layout_width="400dp"
+    <TextView
+        android:id="@+id/addposr_res_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
+        android:text="Restuarant Name:"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addpost_price_et" />
+
+    <EditText
+        android:id="@+id/addpost_price_et"
+        android:layout_width="408dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#DE57A196"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/addpost_price" />
 
     <TextView
-        android:id="@+id/addpost_price"
+        android:id="@+id/addpost_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:text="Total Price:"
+        android:text="Post title:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_desc_et" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/addpost_res_address"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/addpost_cancell_btn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
-        android:text="Address:"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_res_name_et" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#009688"
+        android:text="CANCEL"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addpost_save_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addpost_save_btn" />
 
     <Button
         android:id="@+id/addpost_save_btn"
@@ -162,32 +182,7 @@
         app:layout_constraintEnd_toStartOf="@+id/addpost_cancell_btn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addpost_add_image" />
-
-    <Button
-        android:id="@+id/addpost_cancell_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#009688"
-        android:text="CANCEL"
-        app:layout_constraintBaseline_toBaselineOf="@+id/addpost_save_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/addpost_save_btn" />
-
-    <ImageView
-        android:id="@+id/addpost_uploaded_picture"
-        android:layout_width="149dp"
-        android:layout_height="60dp"
-        android:src="@drawable/no_image_available"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.702"
-        app:layout_constraintStart_toEndOf="@+id/addpost_add_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.861" />
+        app:layout_constraintTop_toBottomOf="@+id/addpost_add_image"
+        app:layout_constraintVertical_bias="0.081" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
