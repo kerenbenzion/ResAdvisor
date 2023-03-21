@@ -71,6 +71,7 @@ public class Post {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("TAG", "Document has been added with custom ID");
+                        Model.instance().refreshAllPosts();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
